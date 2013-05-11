@@ -1,0 +1,31 @@
+[% SET login = users.$user.uid.0 %]
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>[% config.sitename %] Donations</title>
+    </head>
+    <body>
+        [%- USE date(format='%Y/%m/%d') -%]
+        <h1>Mageia.Org donations</h1>
+        [% donations.total_30 %] Euros have been donated to Mageia.org in the last 30 days.
+
+        [%- l = 5 -%]
+        <h3>Last [% l %] donations</h3>
+        <ul>
+            [%- i=0 -%]
+            [%- FOR don IN donations.donations -%]
+            [%- i = i + 1 -%]
+            [%- LAST IF i > l -%]
+            <li><b>[% don.who %]</b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
+            [%- END -%]
+        </ul>
+
+        <h3>Donations per year</h3>
+        <ul>
+            [%- FOR year IN donations.by_year.keys.sort %]
+            <li><a href="donations_[% year %].html">[% year %]: [% donations.by_year.$year.total %] Euros</a></li>
+            [%- END %]
+        </ul>
+        <small>Last update: [% date.format(last_update, format => '%Y/%m/%d %H:%M:%S') %]</small>
+    </body>
+</html>

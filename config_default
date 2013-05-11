@@ -1,0 +1,6 @@
+grisbi_file: /vra/lib/mga-treasurer/data/mga-accounts.gsb
+tmpl_dir: /usr/share/mga-treasurer/tmpl
+output_format:
+ - html
+out_dir: /var/www/mga-treasurer
+sitename: Mageia.Org

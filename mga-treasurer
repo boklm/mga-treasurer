@@ -1,0 +1,136 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+use YAML qw/LoadFile/;
+use XML::Simple;
+use Template;
+use DateTime;
+#use Data::Dump qw/dd/;
+
+my $config_file = '/usr/share/mga-treasurer/config';
+my $config = LoadFile($ENV{MGATRES_CONF} ? $ENV{MGATRES_CONF} : $config_file);
+my $etc_config_file = '/etc/mga-treasurer.conf';
+my $etc_config = LoadFile($etc_config_file);
+
+foreach my $k (keys %{$etc_config}) {
+    $config->{$k} = $etc_config->{$k};
+}
+
+
+sub donation_category {
+    my $r = shift;
+    my @c = grep {$_->{Na} eq 'Donation'} @{$r->{Category}};
+    return @c ? $c[0]->{Nb} : undef;
+}
+
+sub party_name {
+    my ($r, $Nb) = @_;
+    (grep { $_->{Nb} == $Nb } @{$r->{Party}})[0]->{Na};
+}
+
+sub subcat_name {
+    my ($r, $Nb) = @_;
+    (grep { $_->{Nb} == $Nb } @{$r->{Sub_category}})[0]->{Na};
+}
+
+sub epoch_date {
+    my ($m, $d, $y) = split /\//, shift;
+    DateTime->new(day => $d, month => $m, year => $y)->epoch;
+}
+
+sub donations_list {
+    my $r = shift;
+    my @res;
+    my $don_cat = donation_category($r);
+    my @donations = grep { $_->{Ca} == $don_cat } @{$r->{Transaction}};
+    foreach my $don (@donations) {
+        my %d = (
+            amount => $don->{Am},
+            date   => epoch_date($don->{Dt}),
+            who    => party_name($r, $don->{Pa}),
+            type   => subcat_name($r, $don->{Sca}),
+            $don->{No} ne '(null)' ? (notes  => $don->{No}) : (),
+        );
+        push @res, \%d;
+    }
+    return \@res;
+}
+
+sub donations_infos {
+    my $r = shift;
+    my %res = (
+        donations => donations_list($r),
+        by_month  => {},
+        by_year   => {},
+        total_30  => 0,
+    );
+    foreach my $don (@{$res{donations}}) {
+        my $dt = DateTime->from_epoch(epoch => $don->{date});
+        my $month = $dt->year . '-' . $dt->month;
+        my $year = $dt->year;
+        push @{$res{by_month}->{$month}->{donations}}, $don;
+        $res{by_month}->{$month}->{year} = $year;
+        $res{by_month}->{$month}->{month} = $dt->month;
+        push @{$res{by_year}->{$year}->{donations}}, $don;
+        push @{$res{by_year}->{$year}->{months}}, $month;
+        if (time - $don->{date} < '2592000') { # last 30 days
+            $res{total_30} += $don->{amount};
+        }
+    }
+    foreach my $d ((values $res{by_month}), (values $res{by_year})) {
+        foreach my $don (@{$d->{donations}}) {
+            $d->{total} += $don->{amount};
+            $d->{type}->{$don->{type}} += $don->{amount};
+        }
+    }
+    return \%res;
+}
+
+sub process_template {
+    my ($template, $src, $vars, $dest) = @_;
+    foreach my $extension (@{$config->{output_format}}) {
+        next unless -f "$config->{tmpl_dir}/$src.$extension";
+        $template->process("$src.$extension", $vars, "$dest.$extension");
+    }
+}
+
+sub output_pages {
+    my ($donations) = @_;
+    my $template = Template->new(
+        INCLUDE_PATH => $config->{tmpl_dir},
+        OUTPUT_PATH  => $config->{out_dir},
+    );
+
+    my $last_update = (stat $config->{grisbi_file})[9];
+    foreach my $month (keys $donations->{by_month}) {
+        my $vars = {
+            config    => $config,
+            month     => $month,
+            donations => $donations,
+        };
+        process_template($template, 'donations_by_month', $vars, "donations_$month");
+    }
+
+    foreach my $year (keys $donations->{by_year}) {
+        my $vars = {
+            config    => $config,
+            year      => $year,
+            donations => $donations,
+        };
+        process_template($template, 'donations_by_year', $vars, "donations_$year");
+    }
+
+    my $vars = {
+        config      => $config,
+        donations   => $donations,
+        last_update => $last_update,
+    };
+    process_template($template, 'donations', $vars, 'donations');
+}
+
+my $r = XMLin($config->{grisbi_file});
+my $donations = donations_infos($r);
+
+output_pages($donations);
+

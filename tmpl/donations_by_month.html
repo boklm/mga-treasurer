@@ -1,0 +1,28 @@
+[% SET login = users.$user.uid.0 %]
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>[% config.sitename %]: Donations for [% month %]</title>
+    </head>
+    <body>
+        <h1>Mageia.Org donations for month [% month %]</h1>
+        <h3>Summary</h3>
+        <ul>
+            <li>
+            <b>Total</b>: [% donations.by_month.$month.total %] Euros
+            </li>
+            [% FOR type IN donations.by_month.$month.type.keys %]
+            <li>
+            <b>[% type %]</b>: [% donations.by_month.$month.type.$type %] Euros
+            </li>
+            [%- END -%]
+        </ul>
+        <h3>Donations list</h3>
+        <ul>
+            [%- USE date(format='%Y/%m/%d') -%]
+            [% FOR don IN donations.by_month.$month.donations %]
+            <li><b>[% don.who %]</b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
+            [%- END -%]
+        </ul>
+    </body>
+</html>
