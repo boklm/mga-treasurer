@@ -21,7 +21,7 @@
         <ul>
             [%- USE date(format='%Y/%m/%d') -%]
             [% FOR don IN donations.by_month.$month.donations %]
-            <li><b>[% don.who %]</b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
+            <li><b>[% don.who %]</b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.type %])</li>
             [%- END -%]
         </ul>
     </body>
