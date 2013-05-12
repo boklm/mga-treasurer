@@ -30,8 +30,9 @@ sub party_name {
 }
 
 sub subcat_name {
-    my ($r, $Nb) = @_;
-    (grep { $_->{Nb} == $Nb } @{$r->{Sub_category}})[0]->{Na};
+    my ($r, $Nb, $Nbc) = @_;
+    (grep { $_->{Nb} == $Nb && $_->{Nbc} == $Nbc }
+        @{$r->{Sub_category}})[0]->{Na};
 }
 
 sub epoch_date {
@@ -49,7 +50,7 @@ sub donations_list {
             amount => $don->{Am},
             date   => epoch_date($don->{Dt}),
             who    => party_name($r, $don->{Pa}),
-            type   => subcat_name($r, $don->{Sca}),
+            type   => subcat_name($r, $don->{Sca}, $don_cat),
             $don->{No} ne '(null)' ? (notes  => $don->{No}) : (),
         );
         push @res, \%d;
