@@ -22,7 +22,7 @@
 
         <h3>Donations per year</h3>
         <ul>
-            [%- FOR year IN donations.by_year.keys.sort %]
+            [%- FOR year IN donations.by_year.keys.sort.reverse %]
             <li><a href="donations_[% year %].html">[% year %]: [% donations.by_year.$year.total %] Euros</a></li>
             [%- END %]
         </ul>
