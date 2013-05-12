@@ -68,7 +68,7 @@ sub donations_infos {
     );
     foreach my $don (@{$res{donations}}) {
         my $dt = DateTime->from_epoch(epoch => $don->{date});
-        my $month = $dt->year . '-' . $dt->month;
+        my $month = $dt->year . '-' . sprintf("%02d", $dt->month);
         my $year = $dt->year;
         push @{$res{by_month}->{$month}->{donations}}, $don;
         $res{by_month}->{$month}->{year} = $year;
