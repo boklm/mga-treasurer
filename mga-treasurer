@@ -128,6 +128,7 @@ sub output_pages {
         last_update => $last_update,
     };
     process_template($template, 'donations', $vars, 'donations');
+    process_template($template, 'index', $vars, 'index');
 }
 
 my $r = XMLin($config->{grisbi_file});

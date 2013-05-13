@@ -1,0 +1,53 @@
+[%- USE date(format='%Y/%m/%d') -%]
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>[% config.sitename %] treasurer infos</title>
+    </head>
+    <body>
+        <h1>treasurer.mageia.og</h1>
+
+        This website provides some informations about Mageia.Org bank accounts
+        status.
+
+        <h3>Donations</h3>
+
+        [%- l = 3 -%]
+        Last [% l %] donations received :
+        <ul>
+            [%- i=0 -%]
+            [%- FOR don IN donations.donations.sort('date').reverse -%]
+            [%- i = i + 1 -%]
+            [%- LAST IF i > l -%]
+            <li><b>[% don.who %]</b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
+            [%- END -%]
+        </ul>
+
+        <a href="donations.html">See more about donations</a>.
+
+        <h3>Expenses</h3>
+
+        Coming soon.
+
+        <h3>Grisbi</h3>
+        Mageia.Org accounts are managed using <a href="http://grisbi.org/">grisbi</a>.
+        For more details about Mageia.Org accounts, you can download
+        <a href="mageia-accounts.gsb">this file</a>, and open it with grisbi.
+
+        <h3>Questions</h3>
+        For any question related to Mageia.Org accounts or donations you can
+        send an email to <a href="mailto:treasurer@mageia.org">treasurer@mageia.org</a>.
+
+        <h3>Source code</h3>
+        Source code for the tools used to generate this website is available on
+        Mageia svn repository :
+
+        <p>
+        <code>
+            $ svn co <a href="http://svnweb.mageia.org/soft/mga-treasurer/trunk/">
+                svn://svn.mageia.org/svn/soft/mga-treasurer/trunk/</a> mga-treasurer
+        </code>
+        </p>
+        <small>Last update: [% date.format(last_update, format => '%Y/%m/%d %H:%M:%S') %]</small>
+    </body>
+</html>
