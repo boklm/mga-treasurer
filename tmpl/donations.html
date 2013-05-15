@@ -9,7 +9,7 @@
         [% donations.total_30 %] Euros have been donated to Mageia.org in the last 30 days.
 
         [%- l = 10 -%]
-        <h3>Last [% l %] donations</h3>
+        <h3>Last [% l %] donations <a href="donations.rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="RSS feed" /></a></h3>
         <ul>
             [%- i=0 -%]
             [%- FOR don IN donations.donations.sort('date').reverse -%]

@@ -47,6 +47,7 @@ sub donations_list {
     my @donations = grep { $_->{Ca} == $don_cat } @{$r->{Transaction}};
     foreach my $don (@donations) {
         my %d = (
+            nb     => $don->{Nb},
             amount => $don->{Am},
             date   => epoch_date($don->{Dt}),
             who    => party_name($r, $don->{Pa}),

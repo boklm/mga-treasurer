@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>[% config.sitename %]: Donations</title>
+        <link>[% config.siteurl %]</link>
+        <description>[% config.sitename %] Donations</description>
+        <language>en</language>
+
+        <atom:link href="[% config.siteurl %]/index.rss" rel="self" type="application/rss+xml" />
+
+        [%- FOR don IN donations.donations.sort('date').reverse -%]
+
+        <item>
+            <title>[% don.who %] donated [% don.amount %] Euros</title>
+            <link>[% config.siteurl %]/donations_[% date.format(don.date, format => '%Y-%m') %].html</link>
+            <guid isPermaLink="false">[% config.sitename %]:donations:[% don.nb %]</guid>
+            [%- USE date %]
+            <pubDate>[% date.format(don.date, format => '%a, %d %b %Y %H:%M:%S', gmt => 1) %] GMT</pubDate>
+            <category>[% don.type %]</category>
+            <description>
+                [% don.who %] donated [% don.amount %] Euros ([% don.type %]).
+            </description>
+        </item>
+
+        [%- END -%]
+    </channel>
+</rss>
