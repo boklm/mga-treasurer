@@ -80,7 +80,7 @@ sub donations_infos {
             $res{total_30} += $don->{amount};
         }
     }
-    foreach my $d ((values $res{by_month}), (values $res{by_year})) {
+    foreach my $d ((values %{$res{by_month}}), (values %{$res{by_year}})) {
         foreach my $don (@{$d->{donations}}) {
             $d->{total} += $don->{amount};
             $d->{type}->{$don->{type}} += $don->{amount};
@@ -105,7 +105,7 @@ sub output_pages {
     );
 
     my $last_update = (stat $config->{grisbi_file})[9];
-    foreach my $month (keys $donations->{by_month}) {
+    foreach my $month (keys %{$donations->{by_month}}) {
         my $vars = {
             config    => $config,
             month     => $month,
@@ -114,7 +114,7 @@ sub output_pages {
         process_template($template, 'donations_by_month', $vars, "donations_m_$month");
     }
 
-    foreach my $year (keys $donations->{by_year}) {
+    foreach my $year (keys %{$donations->{by_year}}) {
         my $vars = {
             config    => $config,
             year      => $year,
