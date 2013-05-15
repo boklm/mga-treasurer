@@ -1,4 +1,23 @@
+mga-treasurer
+-------------
+
 mga-treasurer is a script that is used to generate a website showing
 informations about latest donations received and expenses for Mageia.Org
 association.
+
+
+Configuration file
+------------------
+
+The default configuration is stored in the file config_default installed
+as /usr/share/mga-treasurer/config. Default configuration values can be
+overrided using file /etc/mga-treasurer.conf.
+
+
+Testing
+-------
+
+For testing, you can set the environement variable MGATRES_CONF to the
+path of a default configuration file that will be used instead of
+/usr/share/mga-treasurer/config.
 
