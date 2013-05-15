@@ -6,6 +6,7 @@ use YAML qw/LoadFile/;
 use XML::Simple;
 use Template;
 use DateTime;
+use Math::BigFloat;
 #use Data::Dump qw/dd/;
 
 my $config_file = '/usr/share/mga-treasurer/config';
@@ -26,13 +27,18 @@ sub donation_category {
 
 sub party_name {
     my ($r, $Nb) = @_;
-    (grep { $_->{Nb} == $Nb } @{$r->{Party}})[0]->{Na};
+    $Nb == 0 ? '' : (grep { $_->{Nb} == $Nb } @{$r->{Party}})[0]->{Na};
 }
 
 sub subcat_name {
     my ($r, $Nb, $Nbc) = @_;
     (grep { $_->{Nb} == $Nb && $_->{Nbc} == $Nbc }
         @{$r->{Sub_category}})[0]->{Na};
+}
+
+sub account_name {
+    my ($r, $Ac) = @_;
+    (grep { $_->{Number} == $Ac } @{$r->{Account}})[0]->{Name};
 }
 
 sub epoch_date {
@@ -52,7 +58,9 @@ sub transactions_list {
             date    => epoch_date($tra->{Dt}),
             pa      => $tra->{Pa},
             who     => party_name($r, $tra->{Pa}),
-            sc_name => subcat_name($r, $tra->{Sca}, $tra->{Ca}),
+            ac      => $tra->{Ac},
+            account => account_name($r, $tra->{Ac}),
+            $tra->{Sca} != 0 ? (sc_name => subcat_name($r, $tra->{Sca}, $tra->{Ca})) : (),
             $tra->{No} ne '(null)' ? (notes  => $tra->{No}) : (),
         );
         push @res, \%d;
@@ -93,6 +101,39 @@ sub donations_infos {
     return \%res;
 }
 
+sub transactions_infos {
+    my $r = shift;
+    my %res = (
+        transactions => transactions_list($r),
+        by_month     => {},
+        by_year      => {},
+        by_pa        => {},
+        by_account   => {},
+        balance      => new Math::BigFloat 0,
+    );
+    foreach my $tra (@{$res{transactions}}) {
+        my $dt = DateTime->from_epoch(epoch => $tra->{date});
+        my $month = $dt->year . '-' . sprintf("%02d", $dt->month);
+        my $year = $dt->year;
+        push @{$res{by_month}->{$month}->{transactions}}, $tra;
+        $res{by_month}->{$month}->{year} = $year;
+        $res{by_month}->{$month}->{month} = $dt->month;
+        $res{by_account}->{$tra->{ac}}->{account} = $tra->{account};
+        push @{$res{by_year}->{$year}->{transactions}}, $tra;
+        push @{$res{by_year}->{$year}->{months}}, $month;
+        push @{$res{by_pa}->{$tra->{pa}}->{transactions}}, $tra;
+        push @{$res{by_account}->{$tra->{ac}}->{transactions}}, $tra;
+        $res{balance} += new Math::BigFloat $tra->{amount};
+    }
+    foreach my $t (values %{$res{by_account}}) {
+        $t->{balance} = new Math::BigFloat 0;
+        foreach my $tra (@{$t->{transactions}}) {
+            $t->{balance} += new Math::BigFloat $tra->{amount};
+        }
+    }
+    return \%res;
+}
+
 sub process_template {
     my ($template, $src, $vars, $dest) = @_;
     foreach my $extension (@{$config->{output_format}}) {
@@ -102,7 +143,7 @@ sub process_template {
 }
 
 sub output_pages {
-    my ($r, $donations) = @_;
+    my ($r, $donations, $transactions) = @_;
     my $template = Template->new(
         INCLUDE_PATH => $config->{tmpl_dir},
         OUTPUT_PATH  => $config->{out_dir},
@@ -111,36 +152,40 @@ sub output_pages {
     my $last_update = (stat $config->{grisbi_file})[9];
     foreach my $month (keys %{$donations->{by_month}}) {
         my $vars = {
-            config    => $config,
-            month     => $month,
-            donations => $donations,
+            config       => $config,
+            month        => $month,
+            donations    => $donations,
+            transactions => $transactions,
         };
         process_template($template, 'donations_by_month', $vars, "donations_m_$month");
     }
 
     foreach my $year (keys %{$donations->{by_year}}) {
         my $vars = {
-            config    => $config,
-            year      => $year,
-            donations => $donations,
+            config       => $config,
+            year         => $year,
+            donations    => $donations,
+            transactions => $transactions,
         };
         process_template($template, 'donations_by_year', $vars, "donations_y_$year");
     }
 
     foreach my $pa (keys %{$donations->{by_pa}}) {
         my $vars = {
-            config    => $config,
-            pa        => $pa,
-            who       => party_name($r, $pa),
-            donations => $donations,
+            config       => $config,
+            pa           => $pa,
+            who          => party_name($r, $pa),
+            donations    => $donations,
+            transactions => $transactions,
         };
         process_template($template, 'donations_by_pa', $vars, "donations_p_$pa");
     }
 
     my $vars = {
-        config      => $config,
-        donations   => $donations,
-        last_update => $last_update,
+        config       => $config,
+        donations    => $donations,
+        transactions => $transactions,
+        last_update  => $last_update,
     };
     process_template($template, 'donations', $vars, 'donations');
     process_template($template, 'index', $vars, 'index');
@@ -148,6 +193,7 @@ sub output_pages {
 
 my $r = XMLin($config->{grisbi_file});
 my $donations = donations_infos($r);
+my $transactions = transactions_infos($r);
 
-output_pages($r, $donations);
+output_pages($r, $donations, $transactions);
 
