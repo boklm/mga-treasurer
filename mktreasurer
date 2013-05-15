@@ -40,19 +40,20 @@ sub epoch_date {
     DateTime->new(day => $d, month => $m, year => $y)->epoch;
 }
 
-sub donations_list {
+sub transactions_list {
     my ($r, $cat) = @_;
     my @res;
-    my @donations = grep { $_->{Ca} == $cat } @{$r->{Transaction}};
-    foreach my $don (@donations) {
+    my @transactions = $cat ? grep { $_->{Ca} == $cat } @{$r->{Transaction}}
+                                : @{$r->{Transaction}};
+    foreach my $tra (@transactions) {
         my %d = (
-            nb     => $don->{Nb},
-            amount => $don->{Am},
-            date   => epoch_date($don->{Dt}),
-            pa     => $don->{Pa},
-            who    => party_name($r, $don->{Pa}),
-            type   => subcat_name($r, $don->{Sca}, $cat),
-            $don->{No} ne '(null)' ? (notes  => $don->{No}) : (),
+            nb     => $tra->{Nb},
+            amount => $tra->{Am},
+            date   => epoch_date($tra->{Dt}),
+            pa     => $tra->{Pa},
+            who    => party_name($r, $tra->{Pa}),
+            type   => subcat_name($r, $tra->{Sca}, $tra->{Ca}),
+            $tra->{No} ne '(null)' ? (notes  => $tra->{No}) : (),
         );
         push @res, \%d;
     }
@@ -62,7 +63,7 @@ sub donations_list {
 sub donations_infos {
     my $r = shift;
     my %res = (
-        donations => donations_list($r, donation_category($r)),
+        donations => transactions_list($r, donation_category($r)),
         by_month  => {},
         by_year   => {},
         by_pa     => {},
