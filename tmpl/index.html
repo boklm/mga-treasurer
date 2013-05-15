@@ -25,9 +25,16 @@
 
         <a href="donations.html">See more about donations</a>.
 
-        <h3>Expenses</h3>
+        <h3>Accounts status</h3>
 
-        Coming soon.
+        <ul>
+            <li>Global balances: [% transactions.balance %] Euros</li>
+            [%- FOR ac IN transactions.by_account.values -%]
+            <li>[% ac.account %] : [% ac.balance %] Euros</li>
+            [%- END -%]
+        </ul>
+
+        More details coming soon.
 
         <h3>Grisbi</h3>
         <p>
