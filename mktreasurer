@@ -41,10 +41,9 @@ sub epoch_date {
 }
 
 sub donations_list {
-    my $r = shift;
+    my ($r, $cat) = @_;
     my @res;
-    my $don_cat = donation_category($r);
-    my @donations = grep { $_->{Ca} == $don_cat } @{$r->{Transaction}};
+    my @donations = grep { $_->{Ca} == $cat } @{$r->{Transaction}};
     foreach my $don (@donations) {
         my %d = (
             nb     => $don->{Nb},
@@ -52,7 +51,7 @@ sub donations_list {
             date   => epoch_date($don->{Dt}),
             pa     => $don->{Pa},
             who    => party_name($r, $don->{Pa}),
-            type   => subcat_name($r, $don->{Sca}, $don_cat),
+            type   => subcat_name($r, $don->{Sca}, $cat),
             $don->{No} ne '(null)' ? (notes  => $don->{No}) : (),
         );
         push @res, \%d;
@@ -63,7 +62,7 @@ sub donations_list {
 sub donations_infos {
     my $r = shift;
     my %res = (
-        donations => donations_list($r),
+        donations => donations_list($r, donation_category($r)),
         by_month  => {},
         by_year   => {},
         by_pa     => {},
