@@ -20,7 +20,7 @@
         <ul>
             [%- FOR month IN donations.by_month.keys.sort -%]
             [%- IF donations.by_month.$month.year == year -%]
-            <li><a href="donations_[% month %].html">[% month %]: [% donations.by_month.$month.total %] Euros</a></li>
+            <li><a href="donations_m_[% month %].html">[% month %]: [% donations.by_month.$month.total %] Euros</a></li>
             [%- END -%]
             [%- END -%]
         </ul>

@@ -111,7 +111,7 @@ sub output_pages {
             month     => $month,
             donations => $donations,
         };
-        process_template($template, 'donations_by_month', $vars, "donations_$month");
+        process_template($template, 'donations_by_month', $vars, "donations_m_$month");
     }
 
     foreach my $year (keys $donations->{by_year}) {
@@ -120,7 +120,7 @@ sub output_pages {
             year      => $year,
             donations => $donations,
         };
-        process_template($template, 'donations_by_year', $vars, "donations_$year");
+        process_template($template, 'donations_by_year', $vars, "donations_y_$year");
     }
 
     my $vars = {
