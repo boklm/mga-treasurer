@@ -17,9 +17,9 @@
             <guid isPermaLink="false">[% config.sitename %]:donations:[% don.nb %]</guid>
             [%- USE date %]
             <pubDate>[% date.format(don.date, format => '%a, %d %b %Y %H:%M:%S', gmt => 1) %] GMT</pubDate>
-            <category>[% don.type %]</category>
+            <category>[% don.sc_name %]</category>
             <description>
-                [% don.who %] donated [% don.amount %] Euros ([% don.type %]).
+                [% don.who %] donated [% don.amount %] Euros ([% don.sc_name %]).
             </description>
         </item>
 

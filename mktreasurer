@@ -47,12 +47,12 @@ sub transactions_list {
                                 : @{$r->{Transaction}};
     foreach my $tra (@transactions) {
         my %d = (
-            nb     => $tra->{Nb},
-            amount => $tra->{Am},
-            date   => epoch_date($tra->{Dt}),
-            pa     => $tra->{Pa},
-            who    => party_name($r, $tra->{Pa}),
-            type   => subcat_name($r, $tra->{Sca}, $tra->{Ca}),
+            nb      => $tra->{Nb},
+            amount  => $tra->{Am},
+            date    => epoch_date($tra->{Dt}),
+            pa      => $tra->{Pa},
+            who     => party_name($r, $tra->{Pa}),
+            sc_name => subcat_name($r, $tra->{Sca}, $tra->{Ca}),
             $tra->{No} ne '(null)' ? (notes  => $tra->{No}) : (),
         );
         push @res, \%d;
@@ -87,7 +87,7 @@ sub donations_infos {
                    (values %{$res{by_pa}})) {
         foreach my $don (@{$d->{donations}}) {
             $d->{total} += $don->{amount};
-            $d->{type}->{$don->{type}} += $don->{amount};
+            $d->{type}->{$don->{sc_name}} += $don->{amount};
         }
     }
     return \%res;

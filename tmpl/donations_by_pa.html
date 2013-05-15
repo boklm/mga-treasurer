@@ -20,7 +20,7 @@
         <ul>
             [%- USE date(format='%Y/%m/%d') -%]
             [% FOR don IN donations.by_pa.$pa.donations %]
-            <li><b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.type %])</li>
+            <li><b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.sc_name %])</li>
             [%- END -%]
         </ul>
     </body>
