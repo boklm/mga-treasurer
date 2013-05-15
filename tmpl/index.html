@@ -19,7 +19,7 @@
             [%- FOR don IN donations.donations.sort('date').reverse -%]
             [%- i = i + 1 -%]
             [%- LAST IF i > l -%]
-            <li><b>[% don.who %]</b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
+            <li><b><a href="donations_p_[% don.pa %].html">[% don.who %]</a></b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
             [%- END -%]
         </ul>
 

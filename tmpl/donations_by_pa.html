@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>[% config.sitename %]: Donations received from [% who %]</title>
+    </head>
+    <body>
+        <h1>Mageia.Org donations received from [% who %]</h1>
+        <h3>Summary</h3>
+        <ul>
+            <li>
+            <b>Total</b>: [% donations.by_pa.$pa.total %] Euros
+            </li>
+            [% FOR type IN donations.by_pa.$pa.type.keys %]
+            <li>
+            <b>[% type %]</b>: [% donations.by_pa.$pa.type.$type %] Euros
+            </li>
+            [%- END -%]
+        </ul>
+        <h3>Donations list</h3>
+        <ul>
+            [%- USE date(format='%Y/%m/%d') -%]
+            [% FOR don IN donations.by_pa.$pa.donations %]
+            <li><b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.type %])</li>
+            [%- END -%]
+        </ul>
+    </body>
+</html>
