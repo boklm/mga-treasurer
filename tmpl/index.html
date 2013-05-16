@@ -39,7 +39,7 @@
 
         <ul>
             [%- FOR ca IN transactions.by_ca.keys.sort %]
-            <li><b>[% transactions.by_ca.$ca.c_name %]</b>: [% transactions.by_ca.$ca.balance %] Euros</li>
+            <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.balance %] Euros</li>
             [%- END -%]
         </ul>
 

@@ -23,7 +23,7 @@
         <h3>By category</h3>
         <ul>
             [% FOR ca IN transactions.by_year.$year.ca_balance.keys %]
-            <li><b>[% transactions.by_ca.$ca.c_name %]</b>: [% transactions.by_year.$year.ca_balance.$ca %] Euros</b></li>
+            <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_year.$year.ca_balance.$ca %] Euros</b></li>
             [%- END -%]
         </ul>
         <h3>Monthly reports</h3>

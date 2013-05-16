@@ -241,6 +241,17 @@ sub output_pages {
         process_template($template, 'transactions_by_ac', $vars, "a_$ac");
     }
 
+    foreach my $ca (keys %{$transactions->{by_ca}}) {
+        my $vars = {
+            config       => $config,
+            ca           => $ca,
+            c_name       => $transactions->{by_ca}->{$ca}->{c_name},
+            donations    => $donations,
+            transactions => $transactions,
+        };
+        process_template($template, 'transactions_by_ca', $vars, "c_$ca");
+    }
+
     my $vars = {
         config       => $config,
         donations    => $donations,

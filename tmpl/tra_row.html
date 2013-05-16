@@ -8,7 +8,9 @@
                 [% ELSE %]
                 <td>[% tra.notes %]</td>
                 [% END %]
-                <td>[% tra.c_name %]
+                <td>[% IF tra.ca %]
+                    <a href="c_[% tra.ca %].html">[% tra.c_name %]</a>
+                    [% END %]
                     [% IF tra.sc_name %]
                     : [% tra.sc_name %]
                     [% END %]

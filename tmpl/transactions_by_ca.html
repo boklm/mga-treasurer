@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>[% config.sitename %]: Transactions for [% c_name %]</title>
+    </head>
+    <body>
+        <h1>Mageia.Org transactions for category [% c_name %]</h1>
+        <h3>Summary</h3>
+        <ul>
+            [% IF transactions.by_ca.$ca.revenues != 0 %]
+            <li><b>Revenues</b>: [% transactions.by_ca.$ca.revenues %] Euros</li>
+            [% END %]
+            [% IF transactions.by_ca.$ca.expenses != 0 %]
+            <li><b>Expenses</b>: [% transactions.by_ca.$ca.expenses %] Euros</li>
+            [% END %]
+        </ul>
+        <h3>Details</h3>
+        <table border="1">
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Account</th>
+                <th>Who</th>
+                <th>Notes</th>
+                <th>Category</th>
+            </tr>
+            [%- USE date(format='%Y/%m/%d') -%]
+            [% FOR tra IN transactions.by_ca.$ca.transactions.sort('date').reverse %]
+            [%- INCLUDE tra_row.html %]
+            [%- END -%]
+        </table>
+    </body>
+</html>
