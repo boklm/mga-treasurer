@@ -13,7 +13,7 @@
 
         <item>
             <title>[% don.who %] donated [% don.amount %] Euros</title>
-            <link>[% config.siteurl %]/donations_[% date.format(don.date, format => '%Y-%m') %].html</link>
+            <link>[% config.siteurl %]/donations_m_[% date.format(don.date, format => '%Y-%m') %].html</link>
             <guid isPermaLink="false">[% config.sitename %]:donations:[% don.nb %]</guid>
             [%- USE date %]
             <pubDate>[% date.format(don.date, format => '%a, %d %b %Y %H:%M:%S', gmt => 1) %] GMT</pubDate>
