@@ -60,6 +60,7 @@ sub transactions_list {
             who     => party_name($r, $tra->{Pa}),
             ac      => $tra->{Ac},
             account => account_name($r, $tra->{Ac}),
+            $tra->{Trt} != 0 ? (trt => $tra->{Trt}) : (),
             $tra->{Sca} != 0 ? (sc_name => subcat_name($r, $tra->{Sca}, $tra->{Ca})) : (),
             $tra->{No} ne '(null)' ? (notes  => $tra->{No}) : (),
         );
@@ -130,6 +131,12 @@ sub transactions_infos {
             $t->{balance} = new Math::BigFloat 0;
             foreach my $tra (@{$t->{transactions}}) {
                 $t->{balance} += new Math::BigFloat $tra->{amount};
+                next if $tra->{trt} && $by ne 'by_account';
+                if ($tra->{amount} > 0) {
+                    $t->{revenues} += new Math::BigFloat $tra->{amount};
+                } else {
+                    $t->{expenses} -= new Math::BigFloat $tra->{amount};
+                }
             }
         }
     }
