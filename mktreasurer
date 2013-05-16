@@ -125,10 +125,23 @@ sub transactions_infos {
         push @{$res{by_account}->{$tra->{ac}}->{transactions}}, $tra;
         $res{balance} += new Math::BigFloat $tra->{amount};
     }
-    foreach my $t (values %{$res{by_account}}) {
-        $t->{balance} = new Math::BigFloat 0;
-        foreach my $tra (@{$t->{transactions}}) {
-            $t->{balance} += new Math::BigFloat $tra->{amount};
+    foreach my $by ('by_account', 'by_year', 'by_month') {
+        foreach my $t (values %{$res{$by}}) {
+            $t->{balance} = new Math::BigFloat 0;
+            foreach my $tra (@{$t->{transactions}}) {
+                $t->{balance} += new Math::BigFloat $tra->{amount};
+            }
+        }
+    }
+    foreach my $by ('by_year', 'by_month') {
+        my ($prev, $start_balance);
+        foreach my $b (sort keys %{$res{$by}}) {
+            my $y = $res{$by}->{$b};
+            $y->{start_balance} = $start_balance ? $start_balance : new Math::BigFloat 0;
+            $y->{end_balance} = $y->{balance} + new Math::BigFloat $y->{start_balance};
+            $start_balance = $y->{end_balance};
+            $y->{prev} = $prev if $prev;
+            $prev = $b;
         }
     }
     return \%res;
