@@ -54,7 +54,7 @@ sub transactions_list {
     foreach my $tra (@transactions) {
         my %d = (
             nb      => $tra->{Nb},
-            amount  => $tra->{Am},
+            amount  => (new Math::BigFloat $tra->{Am}),
             date    => epoch_date($tra->{Dt}),
             pa      => $tra->{Pa},
             who     => party_name($r, $tra->{Pa}),
@@ -124,18 +124,18 @@ sub transactions_infos {
         push @{$res{by_year}->{$year}->{months}}, $month;
         push @{$res{by_pa}->{$tra->{pa}}->{transactions}}, $tra;
         push @{$res{by_account}->{$tra->{ac}}->{transactions}}, $tra;
-        $res{balance} += new Math::BigFloat $tra->{amount};
+        $res{balance} += $tra->{amount};
     }
     foreach my $by ('by_account', 'by_year', 'by_month') {
         foreach my $t (values %{$res{$by}}) {
             $t->{balance} = new Math::BigFloat 0;
             foreach my $tra (@{$t->{transactions}}) {
-                $t->{balance} += new Math::BigFloat $tra->{amount};
+                $t->{balance} += $tra->{amount};
                 next if $tra->{trt} && $by ne 'by_account';
                 if ($tra->{amount} > 0) {
-                    $t->{revenues} += new Math::BigFloat $tra->{amount};
+                    $t->{revenues} += $tra->{amount};
                 } else {
-                    $t->{expenses} -= new Math::BigFloat $tra->{amount};
+                    $t->{expenses} -= $tra->{amount};
                 }
             }
         }
