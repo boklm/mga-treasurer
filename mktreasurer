@@ -150,27 +150,36 @@ sub output_pages {
     );
 
     my $last_update = (stat $config->{grisbi_file})[9];
-    foreach my $month (keys %{$donations->{by_month}}) {
+    foreach my $month (keys %{ { %{$donations->{by_month}},
+                                 %{$transactions->{by_month}} } }) {
         my $vars = {
             config       => $config,
             month        => $month,
             donations    => $donations,
             transactions => $transactions,
         };
-        process_template($template, 'donations_by_month', $vars, "donations_m_$month");
+        process_template($template, 'donations_by_month', $vars,
+            "donations_m_$month") if $donations->{by_month}->{$month};
+        process_template($template, 'transactions_by_month', $vars,
+            "m_$month") if $transactions->{by_month}->{$month};
     }
 
-    foreach my $year (keys %{$donations->{by_year}}) {
+    foreach my $year (keys %{ { %{$donations->{by_year}},
+                                %{$transactions->{by_year}} } }) {
         my $vars = {
             config       => $config,
             year         => $year,
             donations    => $donations,
             transactions => $transactions,
         };
-        process_template($template, 'donations_by_year', $vars, "donations_y_$year");
+        process_template($template, 'donations_by_year', $vars,
+            "donations_y_$year") if $donations->{by_year}->{$year};
+        process_template($template, 'transactions_by_year', $vars,
+            "y_$year") if $transactions->{by_year}->{$year};
     }
 
-    foreach my $pa (keys %{$donations->{by_pa}}) {
+    foreach my $pa (keys %{ { %{$donations->{by_pa}},
+                              %{$transactions->{by_pa}} } }) {
         my $vars = {
             config       => $config,
             pa           => $pa,
@@ -178,7 +187,10 @@ sub output_pages {
             donations    => $donations,
             transactions => $transactions,
         };
-        process_template($template, 'donations_by_pa', $vars, "donations_p_$pa");
+        process_template($template, 'donations_by_pa', $vars,
+            "donations_p_$pa") if $donations->{by_pa}->{$pa};
+        process_template($template, 'transactions_by_pa', $vars,
+            "p_$pa") if $transactions->{by_pa}->{$pa};
     }
 
     my $vars = {
@@ -188,6 +200,7 @@ sub output_pages {
         last_update  => $last_update,
     };
     process_template($template, 'donations', $vars, 'donations');
+    process_template($template, 'transactions', $vars, 'transactions');
     process_template($template, 'index', $vars, 'index');
 }
 
