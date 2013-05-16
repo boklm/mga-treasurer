@@ -7,7 +7,7 @@
         <description>[% config.sitename %] Donations</description>
         <language>en</language>
 
-        <atom:link href="[% config.siteurl %]/index.rss" rel="self" type="application/rss+xml" />
+        <atom:link href="[% config.siteurl %]/donations.rss" rel="self" type="application/rss+xml" />
 
         [%- FOR don IN donations.donations.sort('date').reverse -%]
 
