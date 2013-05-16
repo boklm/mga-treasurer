@@ -137,7 +137,7 @@ sub transactions_infos {
         }
         $res{balance} += $tra->{amount};
     }
-    foreach my $by ('by_ac', 'by_year', 'by_month', 'by_ca') {
+    foreach my $by ('by_ac', 'by_year', 'by_month', 'by_ca', 'by_pa') {
         foreach my $t (values %{$res{$by}}) {
             $t->{balance} = new Math::BigFloat 0;
             $t->{revenues} = new Math::BigFloat 0;

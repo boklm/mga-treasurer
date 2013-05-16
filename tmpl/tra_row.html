@@ -2,7 +2,7 @@
                 <td>[% date.format(tra.date) %]</td>
                 <td>[% tra.amount %]</td>
                 <td><a href="a_[% tra.ac %].html">[% tra.account %]</a></td>
-                <td>[% tra.who %]</td>
+                <td>[% IF tra.pa %]<a href="p_[% tra.pa %].html">[% tra.who %]</a>[% END %]</td>
                 [% IF tra.trt %]
                 <td>Internal transfert</td>
                 [% ELSE %]
