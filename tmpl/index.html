@@ -44,6 +44,14 @@
             [%- END -%]
         </ul>
 
+        <h3>Accounts history</h3>
+
+        <ul>
+            [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
+            <li><a href="y_[% year %].html">[%- year -%]</a></li>
+            [%- END -%]
+        </ul>
+
         <h3>Grisbi</h3>
         <p>
         Mageia.Org accounts are managed using <a href="http://grisbi.org/">grisbi</a>.

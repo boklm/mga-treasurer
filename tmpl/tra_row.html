@@ -1,0 +1,16 @@
+            <tr>
+                <td>[% date.format(tra.date) %]</td>
+                <td>[% tra.amount %]</td>
+                <td>[% tra.account %]</td>
+                <td>[% tra.who %]</td>
+                [% IF tra.trt %]
+                <td>Internal transfert</td>
+                [% ELSE %]
+                <td>[% tra.notes %]</td>
+                [% END %]
+                <td>[% tra.c_name %]
+                    [% IF tra.sc_name %]
+                    : [% tra.sc_name %]
+                    [% END %]
+                </td>
+            </tr>
