@@ -30,12 +30,10 @@
 
         <ul>
             <li>Global balances: [% transactions.balance %] Euros</li>
-            [%- FOR ac IN transactions.by_ac.values -%]
-            <li>[% ac.account %] : [% ac.balance %] Euros</li>
+            [%- FOR ac IN transactions.by_ac.keys -%]
+            <li><a href="a_[% ac %].html">[% transactions.by_ac.$ac.account %]</a>: [% transactions.by_ac.$ac.balance %] Euros</li>
             [%- END -%]
         </ul>
-
-        More details coming soon.
 
         <h3>Expenses and revenues by category</h3>
 

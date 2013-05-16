@@ -230,6 +230,17 @@ sub output_pages {
             "p_$pa") if $transactions->{by_pa}->{$pa};
     }
 
+    foreach my $ac (keys %{$transactions->{by_ac}}) {
+        my $vars = {
+            config       => $config,
+            ac           => $ac,
+            account      => $transactions->{by_ac}->{$ac}->{account},
+            donations    => $donations,
+            transactions => $transactions,
+        };
+        process_template($template, 'transactions_by_ac', $vars, "a_$ac");
+    }
+
     my $vars = {
         config       => $config,
         donations    => $donations,

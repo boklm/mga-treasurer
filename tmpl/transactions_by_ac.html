@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>[% config.sitename %]: Transactions for [% account %]</title>
+    </head>
+    <body>
+        <h1>Mageia.Org transactions for [% account %]</h1>
+        <h3>Summary</h3>
+        <ul>
+            <li>
+            <b>Balance</b>: [% transactions.by_ac.$ac.balance %] Euros
+            </li>
+        </ul>
+        <h3>Details</h3>
+        <table border="1">
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Account</th>
+                <th>Who</th>
+                <th>Notes</th>
+                <th>Category</th>
+            </tr>
+            [%- USE date(format='%Y/%m/%d') -%]
+            [% FOR tra IN transactions.by_ac.$ac.transactions.sort('date').reverse %]
+            [%- INCLUDE tra_row.html %]
+            [%- END -%]
+        </table>
+    </body>
+</html>
