@@ -140,6 +140,8 @@ sub transactions_infos {
     foreach my $by ('by_account', 'by_year', 'by_month', 'by_ca') {
         foreach my $t (values %{$res{$by}}) {
             $t->{balance} = new Math::BigFloat 0;
+            $t->{revenues} = new Math::BigFloat 0;
+            $t->{expenses} = new Math::BigFloat 0;
             foreach my $tra (@{$t->{transactions}}) {
                 $t->{balance} += $tra->{amount};
                 next if $tra->{trt} && $by ne 'by_account';
