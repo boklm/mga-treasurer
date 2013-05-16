@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>[% config.sitename %]: Transactions</title>
+        <link>[% config.siteurl %]</link>
+        <description>[% config.sitename %] Transactions</description>
+        <language>en</language>
+
+        <atom:link href="[% config.siteurl %]/transactions.rss" rel="self" type="application/rss+xml" />
+
+        [%- FOR tra IN transactions.transactions.sort('date').reverse -%]
+
+        <item>
+            <title>[% tra.amount %] Euros[% IF tra.notes %] - [% tra.notes %][% END %][% IF tra.ca %] - [% tra.c_name %][% END %]</title>
+            <link>[% config.siteurl %]/m_[% date.format(tra.date, format => '%Y-%m') %].html</link>
+            <guid isPermaLink="false">[% config.sitename %]:transactions:[% tra.nb %]</guid>
+            [%- USE date %]
+            <pubDate>[% date.format(tra.date, format => '%a, %d %b %Y %H:%M:%S', gmt => 1) %] GMT</pubDate>
+            [% IF tra.ca %]
+            <category>[% tra.c_name %]</category>
+            [% END %]
+            <description>
+                Amount: [% tra.amount %] Euros&lt;br/&gt;
+                Account: [% tra.account %]&lt;br/&gt;
+                [%- IF tra.pa -%]
+                Who: [% tra.who %]&lt;br/&gt;
+                [%- END %]
+                [%- IF tra.trt -%]
+                Notes: Internal transfert&lt;br/&gt;
+                [%- ELSIF tra.notes -%]
+                Notes: [% tra.notes %]&lt;br/&gt;
+                [%- END %]
+                [%- IF tra.ca -%]
+                Category: [% tra.c_name %][% IF tra.sc_name %] : [% tra.sc_name %][% END %]&lt;br/&gt;
+                [%- END %]
+            </description>
+        </item>
+
+        [%- END -%]
+    </channel>
+</rss>
