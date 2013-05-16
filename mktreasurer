@@ -115,7 +115,7 @@ sub transactions_infos {
         by_month     => {},
         by_year      => {},
         by_pa        => {},
-        by_account   => {},
+        by_ac        => {},
         by_ca        => {},
         balance      => new Math::BigFloat 0,
     );
@@ -126,25 +126,25 @@ sub transactions_infos {
         push @{$res{by_month}->{$month}->{transactions}}, $tra;
         $res{by_month}->{$month}->{year} = $year;
         $res{by_month}->{$month}->{month} = $dt->month;
-        $res{by_account}->{$tra->{ac}}->{account} = $tra->{account};
+        $res{by_ac}->{$tra->{ac}}->{account} = $tra->{account};
         push @{$res{by_year}->{$year}->{transactions}}, $tra;
         push @{$res{by_year}->{$year}->{months}}, $month;
         push @{$res{by_pa}->{$tra->{pa}}->{transactions}}, $tra;
-        push @{$res{by_account}->{$tra->{ac}}->{transactions}}, $tra;
+        push @{$res{by_ac}->{$tra->{ac}}->{transactions}}, $tra;
         if ($tra->{ca}) {
             push @{$res{by_ca}->{$tra->{ca}}->{transactions}}, $tra;
             $res{by_ca}->{$tra->{ca}}->{c_name} = $tra->{c_name};
         }
         $res{balance} += $tra->{amount};
     }
-    foreach my $by ('by_account', 'by_year', 'by_month', 'by_ca') {
+    foreach my $by ('by_ac', 'by_year', 'by_month', 'by_ca') {
         foreach my $t (values %{$res{$by}}) {
             $t->{balance} = new Math::BigFloat 0;
             $t->{revenues} = new Math::BigFloat 0;
             $t->{expenses} = new Math::BigFloat 0;
             foreach my $tra (@{$t->{transactions}}) {
                 $t->{balance} += $tra->{amount};
-                next if $tra->{trt} && $by ne 'by_account';
+                next if $tra->{trt} && $by ne 'by_ac';
                 if ($tra->{amount} > 0) {
                     $t->{revenues} += $tra->{amount};
                 } else {
