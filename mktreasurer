@@ -30,6 +30,11 @@ sub party_name {
     $Nb == 0 ? '' : (grep { $_->{Nb} == $Nb } @{$r->{Party}})[0]->{Na};
 }
 
+sub cat_name {
+    my ($r, $Nb) = @_;
+    $Nb == 0 ? '' : (grep { $_->{Nb} == $Nb } @{$r->{Category}})[0]->{Na};
+}
+
 sub subcat_name {
     my ($r, $Nb, $Nbc) = @_;
     (grep { $_->{Nb} == $Nb && $_->{Nbc} == $Nbc }
@@ -62,6 +67,7 @@ sub transactions_list {
             account => account_name($r, $tra->{Ac}),
             $tra->{Trt} != 0 ? (trt => $tra->{Trt}) : (),
             $tra->{Sca} != 0 ? (sc_name => subcat_name($r, $tra->{Sca}, $tra->{Ca})) : (),
+            $tra->{Ca} != 0 ? (c_name => cat_name($r, $tra->{Ca}), ca => $tra->{Ca}) : (),
             $tra->{No} ne '(null)' ? (notes  => $tra->{No}) : (),
         );
         push @res, \%d;
@@ -110,6 +116,7 @@ sub transactions_infos {
         by_year      => {},
         by_pa        => {},
         by_account   => {},
+        by_ca        => {},
         balance      => new Math::BigFloat 0,
     );
     foreach my $tra (@{$res{transactions}}) {
@@ -124,9 +131,13 @@ sub transactions_infos {
         push @{$res{by_year}->{$year}->{months}}, $month;
         push @{$res{by_pa}->{$tra->{pa}}->{transactions}}, $tra;
         push @{$res{by_account}->{$tra->{ac}}->{transactions}}, $tra;
+        if ($tra->{ca}) {
+            push @{$res{by_ca}->{$tra->{ca}}->{transactions}}, $tra;
+            $res{by_ca}->{$tra->{ca}}->{c_name} = $tra->{c_name};
+        }
         $res{balance} += $tra->{amount};
     }
-    foreach my $by ('by_account', 'by_year', 'by_month') {
+    foreach my $by ('by_account', 'by_year', 'by_month', 'by_ca') {
         foreach my $t (values %{$res{$by}}) {
             $t->{balance} = new Math::BigFloat 0;
             foreach my $tra (@{$t->{transactions}}) {
@@ -144,6 +155,10 @@ sub transactions_infos {
         my ($prev, $start_balance);
         foreach my $b (sort keys %{$res{$by}}) {
             my $y = $res{$by}->{$b};
+            foreach my $tra (@{$y->{transactions}}) {
+                next unless $tra->{ca};
+                $y->{ca_balance}->{$tra->{ca}} += $tra->{amount};
+            }
             $y->{start_balance} = $start_balance ? $start_balance : new Math::BigFloat 0;
             $y->{end_balance} = $y->{balance} + new Math::BigFloat $y->{start_balance};
             $start_balance = $y->{end_balance};

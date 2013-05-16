@@ -36,6 +36,14 @@
 
         More details coming soon.
 
+        <h3>Expenses and revenues by category</h3>
+
+        <ul>
+            [%- FOR ca IN transactions.by_ca.keys.sort %]
+            <li><b>[% transactions.by_ca.$ca.c_name %]</b>: [% transactions.by_ca.$ca.balance %] Euros</li>
+            [%- END -%]
+        </ul>
+
         <h3>Grisbi</h3>
         <p>
         Mageia.Org accounts are managed using <a href="http://grisbi.org/">grisbi</a>.
