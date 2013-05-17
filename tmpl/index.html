@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>[% config.sitename %] treasurer infos</title>
+        [% INCLUDE head_chart.html %]
     </head>
     <body>
         <h1>treasurer.mageia.og</h1>
@@ -45,9 +46,43 @@
 
         <h3>Accounts history</h3>
 
+        <canvas id="accounts_history_bar_chart" height="250" width="[% 80 + transactions.by_year.keys.size * 100 %]"></canvas>
+
+        <script>
+
+                var barChartData = {
+                        labels : ["[% transactions.by_year.keys.sort.reverse.join('","') %]"],
+                        datasets : [
+                                {
+                                        fillColor : "#151f79",
+                                        strokeColor : "#101333",
+                                        data : [
+                                        [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
+                                        [%- transactions.by_year.$year.revenues -%]
+                                        [%- IF ! loop.last() -%],[%- END -%]
+                                        [%- END %]]
+                                },
+                                {
+                                        fillColor : "#e51b1b",
+                                        strokeColor : "#f11111",
+                                        data: [
+                                        [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
+                                        [%- transactions.by_year.$year.expenses -%]
+                                        [%- IF ! loop.last() -%],[%- END -%]
+                                        [%- END %]]
+                                }
+                        ]
+                        
+                }
+
+        var myLine = new Chart(document.getElementById("accounts_history_bar_chart").getContext("2d")).Bar(barChartData);
+        
+        </script>
+
+
         <ul>
             [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
-            <li><a href="y_[% year %].html">[%- year -%]</a></li>
+            <li><a href="y_[% year %].html">[%- year -%]</a> - Expenses: [% transactions.by_year.$year.expenses %] Revenues: [% transactions.by_year.$year.revenues %]</li>
             [%- END -%]
         </ul>
 

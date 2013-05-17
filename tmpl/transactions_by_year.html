@@ -2,6 +2,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>[% config.sitename %]: Transactions for [% year %]</title>
+        [% INCLUDE head_chart.html %]
     </head>
     <body>
         <h1>Mageia.Org accounts transactions for year [% year %]</h1>
@@ -27,6 +28,40 @@
             [%- END -%]
         </ul>
         <h3>Monthly reports</h3>
+
+        <canvas id="accounts_history_bar_chart" height="250" width="[% 80 + transactions.by_year.$year.months.size * 65 %]"></canvas>
+
+        <script>
+
+                var barChartData = {
+                        labels : ["[% transactions.by_year.$year.months.sort.join('","') %]"],
+                        datasets : [
+                                {
+                                        fillColor : "#151f79",
+                                        strokeColor : "#101333",
+                                        data : [
+                                        [%- FOR month IN transactions.by_year.$year.months.sort -%]
+                                        [%- transactions.by_month.$month.revenues -%]
+                                        [%- IF ! loop.last() -%],[%- END -%]
+                                        [%- END %]]
+                                },
+                                {
+                                        fillColor : "#e51b1b",
+                                        strokeColor : "#f11111",
+                                        data: [
+                                        [%- FOR month IN transactions.by_year.$year.months.sort -%]
+                                        [%- transactions.by_month.$month.expenses -%]
+                                        [%- IF ! loop.last() -%],[%- END -%]
+                                        [%- END %]]
+                                }
+                        ]
+                        
+                }
+
+        var myLine = new Chart(document.getElementById("accounts_history_bar_chart").getContext("2d")).Bar(barChartData);
+        
+        </script>
+
         <ul>
         [%- FOR month IN transactions.by_month.keys.sort -%]
         [%- IF transactions.by_month.$month.year == year -%]
