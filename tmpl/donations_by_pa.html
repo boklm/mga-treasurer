@@ -5,7 +5,7 @@
     </head>
     <body>
         <h1>Mageia.Org donations received from [% who %]</h1>
-        <h3>Summary</h3>
+        <h2>Summary</h2>
         <ul>
             <li>
             <b>Total</b>: [% donations.by_pa.$pa.total %] Euros
@@ -16,7 +16,7 @@
             </li>
             [%- END -%]
         </ul>
-        <h3>Donations list</h3>
+        <h2>Donations list</h2>
         <ul>
             [%- USE date(format='%Y/%m/%d') -%]
             [% FOR don IN donations.by_pa.$pa.donations %]

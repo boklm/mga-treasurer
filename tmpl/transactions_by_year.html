@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>Mageia.Org accounts transactions for year [% year %]</h1>
-        <h3>Summary</h3>
+        <h2>Summary</h2>
         <ul>
             <li>
             <b>Start balance</b>: [% transactions.by_year.$year.start_balance %] Euros
@@ -21,13 +21,13 @@
             <b>Expenses</b>: [% transactions.by_year.$year.expenses %] Euros
             </li>
         </ul>
-        <h3>By category</h3>
+        <h2>By category</h2>
         <ul>
             [% FOR ca IN transactions.by_year.$year.ca_balance.keys %]
             <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_year.$year.ca_balance.$ca %] Euros</b></li>
             [%- END -%]
         </ul>
-        <h3>Monthly reports</h3>
+        <h2>Monthly reports</h2>
 
         <canvas id="accounts_history_bar_chart" height="250" width="[% 80 + transactions.by_year.$year.months.size * 65 %]"></canvas>
 
@@ -70,7 +70,7 @@
         [%- END -%]
         [%- END -%]
         </ul>
-        <h3>Details</h3>
+        <h2>Details</h2>
         <table border="1">
             <tr>
                 <th>Date</th>

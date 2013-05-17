@@ -11,7 +11,7 @@
         This website provides some informations about Mageia.Org bank accounts
         status.
 
-        <h3>Donations</h3>
+        <h2>Donations</h2>
 
         <a href="donations.rss"><img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="RSS feed" /></a>
         [%- l = 3 -%]
@@ -27,7 +27,7 @@
 
         <a href="donations.html">See more about donations</a>.
 
-        <h3>Accounts status</h3>
+        <h2>Accounts status</h2>
 
         <ul>
             <li>Global balances: [% transactions.balance %] Euros</li>
@@ -36,7 +36,7 @@
             [%- END -%]
         </ul>
 
-        <h3>Expenses and revenues by category</h3>
+        <h2>Expenses and revenues by category</h2>
 
         <ul>
             [%- FOR ca IN transactions.by_ca.keys.sort %]
@@ -44,7 +44,7 @@
             [%- END -%]
         </ul>
 
-        <h3>Accounts history</h3>
+        <h2>Accounts history</h2>
 
         <canvas id="accounts_history_bar_chart" height="250" width="[% 80 + transactions.by_year.keys.size * 100 %]"></canvas>
 
@@ -86,11 +86,11 @@
             [%- END -%]
         </ul>
 
-        <h3>RSS Feeds</h3>
+        <h2>RSS Feeds</h2>
         <p><a href="donations.rss">Donations RSS Feed <img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="RSS feed" /></a></p>
         <p><a href="transactions.rss">Transactions RSS Feed <img src="http://static.mageia.org/g/images/smi/feed-16x16.png" alt="RSS feed" /></a></p>
 
-        <h3>Grisbi</h3>
+        <h2>Grisbi</h2>
         <p>
         Mageia.Org accounts are managed using <a href="http://grisbi.org/">grisbi</a>.
         For more details about Mageia.Org accounts, you can download
@@ -103,11 +103,11 @@
         mailing list.
         </p>
 
-        <h3>Questions</h3>
+        <h2>Questions</h2>
         For any question related to Mageia.Org accounts or donations you can
         send an email to <a href="mailto:treasurer@mageia.org">treasurer@mageia.org</a>.
 
-        <h3>Source code</h3>
+        <h2>Source code</h2>
         Source code for the tools used to generate this website is available on
         Mageia svn repository :
 

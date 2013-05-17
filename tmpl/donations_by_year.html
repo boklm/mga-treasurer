@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>Mageia.Org donations for year [% year %]</h1>
-        <h3>Summary</h3>
+        <h2>Summary</h2>
         <ul>
             <li>
             <b>Total</b>: [% donations.by_year.$year.total %] Euros
@@ -17,7 +17,7 @@
             </li>
             [%- END -%]
         </ul>
-        <h3>Donations for each month</h3>
+        <h2>Donations for each month</h2>
 
         [% IF donations.by_year.$year.months.size > 1 %]
         <canvas id="donations_history_bar_chart" height="250" width="[% 80 + donations.by_year.$year.months.size * 65 %]"></canvas>

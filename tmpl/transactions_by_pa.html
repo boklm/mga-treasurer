@@ -5,7 +5,7 @@
     </head>
     <body>
         <h1>Mageia.Org transactions for [% who %]</h1>
-        <h3>Summary</h3>
+        <h2>Summary</h2>
         <ul>
             [% IF transactions.by_pa.$pa.revenues != 0 %]
             <li><b>Revenues</b>: [% transactions.by_pa.$pa.revenues %] Euros</li>
@@ -14,7 +14,7 @@
             <li><b>Expenses</b>: [% transactions.by_pa.$pa.expenses %] Euros</li>
             [% END %]
         </ul>
-        <h3>Details</h3>
+        <h2>Details</h2>
         <table border="1">
             <tr>
                 <th>Date</th>
