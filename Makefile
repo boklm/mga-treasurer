@@ -22,4 +22,5 @@ install:
 	install -m 644 config_default $(DESTDIR)$(projectdir)/config
 
 tar:
-	git archive --format=tar --prefix $(PROJECTNAME)-$(VERSION)/ HEAD | xz > $(PROJECTNAME)-$(VERSION).tar.xz
+	git archive --format=tar --prefix $(PROJECTNAME)-$(VERSION)/ HEAD | \
+	    xz > $(PROJECTNAME)-$(VERSION).tar.xz
