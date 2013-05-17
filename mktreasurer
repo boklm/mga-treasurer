@@ -177,7 +177,8 @@ sub process_template {
     my ($template, $src, $vars, $dest) = @_;
     foreach my $extension (@{$config->{output_format}}) {
         next unless -f "$config->{tmpl_dir}/$src.$extension";
-        $template->process("$src.$extension", $vars, "$dest.$extension");
+        $template->process("$src.$extension", $vars, "$dest.$extension")
+                || die $template->error(), "\n";
     }
 }
 
