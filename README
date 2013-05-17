@@ -22,6 +22,13 @@ The following files and directories exist in the source tree :
    all the pages.
  - tmpl/: directory containing template for all the pages. Installed as
    /usr/share/mga-treasurer/tmpl.
+ - static/: directory containing static files. Installed as
+   /usr/share/mga-treasurer/static. The web server should be configured to
+   make the files from this directory available at some URL. With apache
+   you can use something like this in your vhost configuration :
+      Alias /static /usr/share/mga-treasurer/static
+   The URL where it is available should be set in the configuration in the
+   staticdir_url variable.
  - config_default: default configuration file, installed as
    /usr/share/mga-treasurer/config.
  - mga-treasurer.conf: example configuration file, installed as
