@@ -2,6 +2,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>[% config.sitename %]: Donations for [% year %]</title>
+        [% INCLUDE head_chart.html %]
     </head>
     <body>
         <h1>Mageia.Org donations for year [% year %]</h1>
@@ -17,6 +18,33 @@
             [%- END -%]
         </ul>
         <h3>Donations for each month</h3>
+
+        [% IF donations.by_year.$year.months.size > 1 %]
+        <canvas id="donations_history_bar_chart" height="250" width="[% 80 + donations.by_year.$year.months.size * 65 %]"></canvas>
+
+        <script>
+
+                var barChartData = {
+                        labels : ["[% donations.by_year.$year.months.sort.join('","') %]"],
+                        datasets : [
+                                {
+                                        fillColor : "#151f79",
+                                        strokeColor : "#101333",
+                                        data : [
+                                        [%- FOR month IN donations.by_year.$year.months.sort -%]
+                                        [%- donations.by_month.$month.total -%]
+                                        [%- IF ! loop.last() -%],[%- END -%]
+                                        [%- END %]]
+                                }
+                        ]
+                        
+                }
+
+        var myLine = new Chart(document.getElementById("donations_history_bar_chart").getContext("2d")).Bar(barChartData);
+        
+        </script>
+        [% END %]
+
         <ul>
             [%- FOR month IN donations.by_month.keys.sort -%]
             [%- IF donations.by_month.$month.year == year -%]
