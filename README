@@ -14,6 +14,20 @@ as /usr/share/mga-treasurer/config. Default configuration values can be
 overrided using file /etc/mga-treasurer.conf.
 
 
+Sources tree
+------------
+
+The following files and directories exist in the source tree :
+ - mktreasurer: main program, installed in /usr/bin. When run generate
+   all the pages.
+ - tmpl/: directory containing template for all the pages. Installed as
+   /usr/share/mga-treasurer/tmpl.
+ - config_default: default configuration file, installed as
+   /usr/share/mga-treasurer/config.
+ - mga-treasurer.conf: example configuration file, installed as
+   /etc/mga-treasurer.conf.
+
+
 Testing
 -------
 
