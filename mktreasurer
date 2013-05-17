@@ -92,7 +92,8 @@ sub donations_infos {
         $res{by_month}->{$month}->{year} = $year;
         $res{by_month}->{$month}->{month} = $dt->month;
         push @{$res{by_year}->{$year}->{donations}}, $don;
-        push @{$res{by_year}->{$year}->{months}}, $month;
+        push @{$res{by_year}->{$year}->{months}}, $month
+            unless grep { $_ eq $month } @{$res{by_year}->{$year}->{months}};
         push @{$res{by_pa}->{$don->{pa}}->{donations}}, $don;
         if (time - $don->{date} < '2592000') { # last 30 days
             $res{total_30} += $don->{amount};
@@ -128,7 +129,8 @@ sub transactions_infos {
         $res{by_month}->{$month}->{month} = $dt->month;
         $res{by_ac}->{$tra->{ac}}->{account} = $tra->{account};
         push @{$res{by_year}->{$year}->{transactions}}, $tra;
-        push @{$res{by_year}->{$year}->{months}}, $month;
+        push @{$res{by_year}->{$year}->{months}}, $month
+            unless grep { $_ eq $month } @{$res{by_year}->{$year}->{months}};
         push @{$res{by_pa}->{$tra->{pa}}->{transactions}}, $tra;
         push @{$res{by_ac}->{$tra->{ac}}->{transactions}}, $tra;
         if ($tra->{ca}) {
