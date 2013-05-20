@@ -162,6 +162,11 @@ sub transactions_infos {
             foreach my $tra (@{$y->{transactions}}) {
                 next unless $tra->{ca};
                 $y->{ca_balance}->{$tra->{ca}} += $tra->{amount};
+                if ($tra->{amount} > 0) {
+                    $y->{ca_revenues}->{$tra->{ca}} += $tra->{amount};
+                } else {
+                    $y->{ca_expenses}->{$tra->{ca}} -= $tra->{amount};
+                }
             }
             $y->{start_balance} = $start_balance ? $start_balance : new Math::BigFloat 0;
             $y->{end_balance} = $y->{balance} + new Math::BigFloat $y->{start_balance};

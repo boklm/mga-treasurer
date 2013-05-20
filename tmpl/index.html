@@ -38,9 +38,85 @@
 
         <h2>Expenses and revenues by category</h2>
 
+        [%-
+        SET ca_expenses = [];
+        SET ca_expenses_names = [];
+        SET ca_revenues = [];
+        SET ca_revenues_names = [];
+
+        FOREACH ca IN transactions.by_ca.keys.sort;
+                IF transactions.by_ca.$ca.expenses != 0;
+                        ca_expenses.push(ca);
+                        ca_expenses_names.push(transactions.by_ca.$ca.c_name);
+                END;
+                IF transactions.by_ca.$ca.revenues != 0;
+                        ca_revenues.push(ca);
+                        ca_revenues_names.push(transactions.by_ca.$ca.c_name);
+                END;
+        END;
+        -%]
+
+        <h3>Expenses</h3>
+        [% IF ca_expenses.size > 1 %]
+        <canvas id="expenses_ca_bar_chart" height="300" width="[% 80 + ca_expenses.size * 65 %]"></canvas>
+
+        <script>
+
+            var barChartDataExpenses = {
+                labels : ["[% ca_expenses_names.join('","') %]"],
+                datasets : [
+                {
+                    fillColor : "#e51b1b",
+                    strokeColor : "#f11111",
+                    data: [
+                    [%- FOR ca IN ca_expenses -%]
+                    [%- transactions.by_ca.$ca.expenses -%]
+                    [%- IF ! loop.last() -%],[%- END -%]
+                    [%- END %]]
+                }
+                ]
+                        
+            }
+
+            var myLine = new Chart(document.getElementById("expenses_ca_bar_chart").getContext("2d")).Bar(barChartDataExpenses);
+        
+        </script>
+        [% END %]
         <ul>
-            [%- FOR ca IN transactions.by_ca.keys.sort %]
-            <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.balance %] Euros</li>
+            [%- FOR ca IN ca_expenses %]
+            <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.expenses %] Euros</li>
+            [%- END -%]
+        </ul>
+
+        <h3>Revenues</h3>
+        [% IF ca_revenues.size > 1 %]
+        <canvas id="revenues_ca_bar_chart" height="300" width="[% 80 + ca_revenues.size * 65 %]"></canvas>
+
+        <script>
+
+            var barChartDataRevenues = {
+                labels : ["[% ca_revenues_names.join('","') %]"],
+                datasets : [
+                {
+                    fillColor : "#151f79",
+                    strokeColor : "#101333",
+                    data: [
+                    [%- FOR ca IN ca_revenues -%]
+                    [%- transactions.by_ca.$ca.revenues -%]
+                    [%- IF ! loop.last() -%],[%- END -%]
+                    [%- END %]]
+                }
+                ]
+                        
+            }
+
+            var myLine = new Chart(document.getElementById("revenues_ca_bar_chart").getContext("2d")).Bar(barChartDataRevenues);
+        
+        </script>
+        [% END %]
+        <ul>
+            [%- FOR ca IN ca_revenues %]
+            <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.revenues %] Euros</li>
             [%- END -%]
         </ul>
 
