@@ -109,32 +109,32 @@
 
         <script>
 
-                var barChartData = {
-                        labels : ["[% transactions.by_year.$year.months.sort.join('","') %]"],
-                        datasets : [
-                                {
-                                        fillColor : "#151f79",
-                                        strokeColor : "#101333",
-                                        data : [
-                                        [%- FOR month IN transactions.by_year.$year.months.sort -%]
-                                        [%- transactions.by_month.$month.revenues -%]
-                                        [%- IF ! loop.last() -%],[%- END -%]
-                                        [%- END %]]
-                                },
-                                {
-                                        fillColor : "#e51b1b",
-                                        strokeColor : "#f11111",
-                                        data: [
-                                        [%- FOR month IN transactions.by_year.$year.months.sort -%]
-                                        [%- transactions.by_month.$month.expenses -%]
-                                        [%- IF ! loop.last() -%],[%- END -%]
-                                        [%- END %]]
-                                }
-                        ]
-                        
+            var barChartData = {
+                labels : ["[% transactions.by_year.$year.months.sort.join('","') %]"],
+                datasets : [
+                {
+                    fillColor : "#151f79",
+                    strokeColor : "#101333",
+                    data : [
+                    [%- FOR month IN transactions.by_year.$year.months.sort -%]
+                    [%- transactions.by_month.$month.revenues -%]
+                    [%- IF ! loop.last() -%],[%- END -%]
+                    [%- END %]]
+                },
+                {
+                    fillColor : "#e51b1b",
+                    strokeColor : "#f11111",
+                    data: [
+                    [%- FOR month IN transactions.by_year.$year.months.sort -%]
+                    [%- transactions.by_month.$month.expenses -%]
+                    [%- IF ! loop.last() -%],[%- END -%]
+                    [%- END %]]
                 }
+                ]
+                        
+            }
 
-        var myLine = new Chart(document.getElementById("accounts_history_bar_chart").getContext("2d")).Bar(barChartData);
+            var myLine = new Chart(document.getElementById("accounts_history_bar_chart").getContext("2d")).Bar(barChartData);
         
         </script>
 
