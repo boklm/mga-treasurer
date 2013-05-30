@@ -19,7 +19,7 @@
         <h2>Donations list</h2>
         <ul>
             [%- USE date(format='%Y/%m/%d') -%]
-            [% FOR don IN donations.by_month.$month.donations %]
+            [% FOR don IN donations.by_month.$month.donations.sort('date').reverse %]
             <li><b><a href="donations_p_[% don.pa %].html">[% don.who %]</a></b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.sc_name %])</li>
             [%- END -%]
         </ul>
