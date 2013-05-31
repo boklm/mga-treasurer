@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>List of people who donated money to Mageia.Org</title>
+    </head>
+    <body>
+        <h1>List of people who donated money to Mageia.Org</h1>
+
+        <ul>
+            [%- FOR pa IN donations.sorted_pa_by_total -%]
+            <li><a href="donations_p_[% pa %].html">[% donations.by_pa.$pa.who %]</a>: [% donations.by_pa.$pa.total %] Euros</li>
+            [%- END -%]
+        </ul>
+    </body>
+</html>

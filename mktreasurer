@@ -83,6 +83,7 @@ sub donations_infos {
         by_year   => {},
         by_pa     => {},
         total_30  => 0,
+        sorted_pa_by_total => [],
     );
     foreach my $don (@{$res{donations}}) {
         my $dt = DateTime->from_epoch(epoch => $don->{date});
@@ -95,6 +96,7 @@ sub donations_infos {
         push @{$res{by_year}->{$year}->{months}}, $month
             unless grep { $_ eq $month } @{$res{by_year}->{$year}->{months}};
         push @{$res{by_pa}->{$don->{pa}}->{donations}}, $don;
+        $res{by_pa}->{$don->{pa}}->{who} = $don->{who};
         if (time - $don->{date} < '2592000') { # last 30 days
             $res{total_30} += $don->{amount};
         }
@@ -106,6 +108,9 @@ sub donations_infos {
             $d->{type}->{$don->{sc_name}} += $don->{amount};
         }
     }
+    @{$res{sorted_pa_by_total}} = sort { 
+                $res{by_pa}->{$b}->{total} <=> $res{by_pa}->{$a}->{total}
+        } keys %{$res{by_pa}};
     return \%res;
 }
 
@@ -267,6 +272,7 @@ sub output_pages {
         last_update  => $last_update,
     };
     process_template($template, 'donations', $vars, 'donations');
+    process_template($template, 'donations_who', $vars, 'donations_who');
     process_template($template, 'transactions', $vars, 'transactions');
     process_template($template, 'index', $vars, 'index');
 }
