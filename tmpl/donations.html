@@ -50,6 +50,14 @@
             <li><a href="donations_y_[% year %].html">[% year %]: [% donations.by_year.$year.total %] Euros</a></li>
             [%- END %]
         </ul>
+
+        <h2>Donations list</h2>
+        <p>
+        The list of donations received is available <a href="donations_all.html">on this page</a>.
+        </p>
+
+        <p>
         <small>Last update: [% date.format(last_update, format => '%Y/%m/%d %H:%M:%S') %]</small>
+        </p>
     </body>
 </html>
