@@ -1,3 +1,4 @@
+- add list of people who donated in JSON format
 - add donations_who.html page listing all people who donated money
 - provide some data in JSON format
 - sort donations by date on monthly page

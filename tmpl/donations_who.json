@@ -1,0 +1,11 @@
+[%- USE JSON ( pretty => 1 ) -%]
+[%-
+   SET out = [];
+   FOREACH pa IN donations.by_pa.keys.sort;
+        SET n = {};
+        SET n.who = donations.by_pa.$pa.who;
+        SET n.url = "http://treasurer.mageia.org/donations_p_${pa}.html";
+        out.push(n);
+   END;
+-%]
+[% out.json -%]
