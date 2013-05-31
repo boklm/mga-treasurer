@@ -1,0 +1,21 @@
+[%- USE JSON ( pretty => 1 ) -%]
+[%- USE date(format='%Y/%m/%d') -%]
+[%-
+   SET out = {};
+   SET out.balance = transactions.balance.bstr;
+   SET out.donations_30days = donations.total_30.bstr;
+   SET out.last_donations = [];
+   SET i=0;
+   SET l=10;
+   FOREACH don IN donations.donations.sort('date').reverse; 
+        SET i = i + 1;
+        LAST IF i > l;
+        SET n = {};
+        SET n.pa = don.pa;
+        SET n.who = don.who;
+        SET n.amount = don.amount.bstr;
+        SET n.date = date.format(don.date);
+        out.last_donations.push(n);
+   END;
+-%]
+[% out.json -%]

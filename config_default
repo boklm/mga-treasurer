@@ -3,6 +3,7 @@ tmpl_dir: /usr/share/mga-treasurer/tmpl
 output_format:
  - html
  - rss
+ - json
 out_dir: /var/www/mga-treasurer
 sitename: Mageia.Org
 siteurl: http://treasurer.mageia.org
