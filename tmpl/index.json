@@ -5,6 +5,7 @@
    SET out.balance = transactions.balance.bstr;
    SET out.donations_30days = donations.total_30.bstr;
    SET out.last_donations = [];
+   SET out.last_update = date.format(last_update, format => '%Y/%m/%d %H:%M:%S');
    SET i=0;
    SET l=10;
    FOREACH don IN donations.donations.sort('date').reverse; 
