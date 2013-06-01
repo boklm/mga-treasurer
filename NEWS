@@ -1,3 +1,5 @@
+Version 0.6
+
 - Fix Makefile to install tmp/*.json files
 
 Version 0.5
