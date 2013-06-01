@@ -42,3 +42,19 @@ For testing, you can set the environement variable MGATRES_CONF to the
 path of a default configuration file that will be used instead of
 /usr/share/mga-treasurer/config.
 
+
+JSON files and http headers
+---------------------------
+
+So that the json files can be used from pages on other domains with
+XMLHttpRequest, the http header Access-Control-Allow-Origin needs to be
+set. See this page for details :
+https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS
+
+To add the header for .json files, you can use something like this in
+apache configuration, inside the VirtualHost definition :
+
+        <FilesMatch "\.json$">
+                Header set Access-Control-Allow-Origin "*"
+        </FilesMatch>
+
