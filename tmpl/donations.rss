@@ -1,3 +1,4 @@
+[%- USE date %]
 <?xml version="1.0"?>
 
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -15,7 +16,6 @@
             <title>[% don.who %] donated [% don.amount %] Euros</title>
             <link>[% config.siteurl %]/donations_m_[% date.format(don.date, format => '%Y-%m') %].html</link>
             <guid isPermaLink="false">[% config.sitename %]:donations:[% don.nb %]</guid>
-            [%- USE date %]
             <pubDate>[% date.format(don.date, format => '%a, %d %b %Y %H:%M:%S', gmt => 1) %] GMT</pubDate>
             <category>[% don.sc_name %]</category>
             <description>
