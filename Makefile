@@ -3,7 +3,7 @@ VERSION=0.5
 PROJECTNAME=mga-treasurer
 BINFILES=mktreasurer
 CFGFILES=mga-treasurer.conf
-TMPLFILES=tmpl/*.html tmpl/*.rss
+TMPLFILES=tmpl/*.html tmpl/*.rss tmpl/*.json
 STATICFILES=static/*
 
 sysconfdir=/etc
