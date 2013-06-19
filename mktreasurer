@@ -83,6 +83,7 @@ sub donations_infos {
         by_year   => {},
         by_pa     => {},
         total_30  => 0,
+        total     => 0,
         sorted_pa_by_total => [],
     );
     foreach my $don (@{$res{donations}}) {
@@ -100,6 +101,7 @@ sub donations_infos {
         if (time - $don->{date} < '2592000') { # last 30 days
             $res{total_30} += $don->{amount};
         }
+        $res{total} += $don->{amount};
     }
     foreach my $d ((values %{$res{by_month}}), (values %{$res{by_year}}),
                    (values %{$res{by_pa}})) {
