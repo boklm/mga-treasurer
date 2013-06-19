@@ -1,3 +1,5 @@
+- remove empty line at the top of donations.rss
+
 Version 0.7
 
 - add total donations to index.json
