@@ -9,13 +9,20 @@
         <h1 id='mgnavt'><a href="index.html">treasurer</a> » <a href="donations.html">donations</a> » who</h1>
 
         <div class="content">
-            <h1>List of people who donated money to Mageia.Org</h1>
+            <div class="section">
+                <h1>List of people who donated money to Mageia.Org</h1>
 
-            <ul>
-                [%- FOR pa IN donations.sorted_pa_by_total -%]
-                <li><a href="donations_p_[% pa %].html">[% donations.by_pa.$pa.who %]</a>: [% donations.by_pa.$pa.total %] Euros</li>
-                [%- END -%]
-            </ul>
+                <ul>
+                    [%- FOR pa IN donations.sorted_pa_by_total -%]
+                    <li><a href="donations_p_[% pa %].html">[% donations.by_pa.$pa.who %]</a>: [% donations.by_pa.$pa.total %] Euros</li>
+                    [%- END -%]
+                </ul>
+            </div>
+            <div class="section">
+                This list only includes the names of donors since January 2013. The
+                donations from before are listed as coming from "Various People". The
+                full list of donors names is available <a href="//www.mageia.org/en/thank-you/">on this page</a>.
+            </div>
         </div>
     </body>
 </html>
