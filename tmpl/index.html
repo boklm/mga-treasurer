@@ -3,14 +3,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>[% config.sitename %] treasurer infos</title>
+        [%- INCLUDE head.html -%]
         [% INCLUDE head_chart.html %]
     </head>
     <body>
-        <h1>treasurer.mageia.og</h1>
+        [%- INCLUDE body_top.html -%]
+        <h1 id='mgnavt'>treasurer.mageia.og</h1>
 
-        This website provides some informations about Mageia.Org bank accounts
-        status.
-
+        <div class="content">
+        <div class="section">
         <h2>Donations</h2>
 
         <a href="donations.rss"><img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a>
@@ -26,7 +27,9 @@
         </ul>
 
         <a href="donations.html">See more about donations</a>.
+        </div>
 
+        <div class="section">
         <h2>Accounts status</h2>
 
         <ul>
@@ -35,7 +38,9 @@
             <li><a href="a_[% ac %].html">[% transactions.by_ac.$ac.account %]</a>: [% transactions.by_ac.$ac.balance %] Euros</li>
             [%- END -%]
         </ul>
+        </div>
 
+        <div class="section">
         <h2>Expenses and revenues by category</h2>
 
         [%-
@@ -119,7 +124,9 @@
             <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.revenues %] Euros</li>
             [%- END -%]
         </ul>
+        </div>
 
+        <div class="section">
         <h2>Accounts history</h2>
 
         <canvas id="accounts_history_bar_chart" height="250" width="[% 80 + transactions.by_year.keys.size * 100 %]"></canvas>
@@ -160,15 +167,21 @@
             <li><a href="y_[% year %].html">[%- year -%]</a> - Expenses: [% transactions.by_year.$year.expenses %] Revenues: [% transactions.by_year.$year.revenues %]</li>
             [%- END -%]
         </ul>
+        </div>
 
+        <div class="section">
         <h2>Who donated money</h2>
 
         You can find <a href="donations_who.html">a list of people who donated to Mageia.Org</a>.
+        </div>
 
+        <div class="section">
         <h2>RSS Feeds</h2>
         <p><a href="donations.rss">Donations RSS Feed <img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a></p>
         <p><a href="transactions.rss">Transactions RSS Feed <img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a></p>
+        </div>
 
+        <div class="section">
         <h2>JSON data</h2>
 
         Some data is available in json format :
@@ -179,7 +192,9 @@
             <li><a href="donations_who.json">donations_who.json</a>: list of people
             who donated money to Mageia.Org.</li>
         </ul>
+        </div>
 
+        <div class="section">
         <h2>Grisbi</h2>
         <p>
         Mageia.Org accounts are managed using <a href="http://grisbi.org/">grisbi</a>.
@@ -192,11 +207,15 @@
         can subscribe to the <a href="https://ml.mageia.org/l/info/treasurer-commits">treasurer-commits</a>
         mailing list.
         </p>
+        </div>
 
+        <div class="section">
         <h2>Questions</h2>
         For any question related to Mageia.Org accounts or donations you can
         send an email to <a href="mailto:treasurer@mageia.org">treasurer@mageia.org</a>.
+        </div>
 
+        <div class="section">
         <h2>Source code</h2>
         Source code for the tools used to generate this website is available on
         Mageia svn repository :
@@ -207,6 +226,12 @@
                 svn://svn.mageia.org/svn/soft/mga-treasurer/trunk/</a> mga-treasurer
         </code>
         </p>
+        </div>
+
+        <div class="section">
         <small>Last update: [% date.format(last_update, format => '%Y/%m/%d %H:%M:%S') %]</small>
+        </div>
+
+        </div>
     </body>
 </html>

@@ -2,8 +2,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>List of people who donated money to Mageia.Org</title>
+        [%- INCLUDE head.html -%]
     </head>
     <body>
+        [%- INCLUDE body_top.html -%]
+        <h1 id='mgnavt'><a href="index.html">treasurer</a> » <a href="donations.html">donations</a> » who</h1>
+
+        <div class="content">
         <h1>List of people who donated money to Mageia.Org</h1>
 
         <ul>
@@ -11,5 +16,6 @@
             <li><a href="donations_p_[% pa %].html">[% donations.by_pa.$pa.who %]</a>: [% donations.by_pa.$pa.total %] Euros</li>
             [%- END -%]
         </ul>
+        </div>
     </body>
 </html>

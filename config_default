@@ -8,3 +8,4 @@ out_dir: /var/www/mga-treasurer
 sitename: Mageia.Org
 siteurl: http://treasurer.mageia.org
 staticdir_url: http://treasurer.mageia.org/static
+links_protocol: //

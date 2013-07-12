@@ -2,9 +2,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>[% config.sitename %]: Transactions for [% year %]</title>
+        [%- INCLUDE head.html -%]
         [% INCLUDE head_chart.html %]
     </head>
     <body>
+        [%- INCLUDE body_top.html -%]
+        <h1 id='mgnavt'><a href="index.html">treasurer</a> » year : [% year %]</h1>
+
+        <div class="content">
         <h1>Mageia.Org accounts transactions for year [% year %]</h1>
         <h2>Summary</h2>
         <ul>
@@ -161,5 +166,6 @@
             [%- INCLUDE tra_row.html %]
             [%- END -%]
         </table>
+        </div>
     </body>
 </html>

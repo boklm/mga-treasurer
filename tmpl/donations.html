@@ -2,13 +2,21 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>[% config.sitename %] Donations</title>
+        [%- INCLUDE head.html -%]
         [% INCLUDE head_chart.html %]
     </head>
     <body>
+        [%- INCLUDE body_top.html -%]
+        <h1 id='mgnavt'><a href="index.html">treasurer</a> » donations</h1>
+
+        <div class="content">
+        <div class="section">
         [%- USE date(format='%Y/%m/%d') -%]
         <h1>Mageia.Org donations</h1>
         [% donations.total_30 %] Euros have been donated to Mageia.org in the last 30 days.
+        </div>
 
+        <div class="section">
         [%- l = 10 -%]
         <h2>Last [% l %] donations <a href="donations.rss"><img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a></h2>
         <ul>
@@ -19,7 +27,9 @@
             <li><b><a href="donations_p_[% don.pa %].html">[% don.who %]</a></b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
             [%- END -%]
         </ul>
+        </div>
 
+        <div class="section">
         <h2>Donations per year</h2>
 
         <canvas id="donations_history_bar_chart" height="250" width="[% 80 + donations.by_year.keys.size * 65 %]"></canvas>
@@ -50,14 +60,20 @@
             <li><a href="donations_y_[% year %].html">[% year %]: [% donations.by_year.$year.total %] Euros</a></li>
             [%- END %]
         </ul>
+        </div>
 
+        <div class="section">
         <h2>Donations list</h2>
         <p>
         The list of donations received is available <a href="donations_all.html">on this page</a>.
         </p>
+        </div>
 
+        <div class="section">
         <p>
         <small>Last update: [% date.format(last_update, format => '%Y/%m/%d %H:%M:%S') %]</small>
         </p>
+        </div>
+        </div>
     </body>
 </html>

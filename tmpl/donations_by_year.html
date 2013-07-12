@@ -2,9 +2,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>[% config.sitename %]: Donations for [% year %]</title>
+        [%- INCLUDE head.html -%]
         [% INCLUDE head_chart.html %]
     </head>
     <body>
+        [%- INCLUDE body_top.html -%]
+        <h1 id='mgnavt'><a href="index.html">treasurer</a> » <a href="donations.html">donations</a> » year [% year %]</h1>
+
+        <div class="content">
         <h1>Mageia.Org donations for year [% year %]</h1>
         <h2>Summary</h2>
         <ul>
@@ -51,5 +56,6 @@
             [%- END -%]
             [%- END -%]
         </ul>
+        </div>
     </body>
 </html>
