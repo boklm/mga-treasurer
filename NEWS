@@ -1,3 +1,8 @@
+Version 0.10
+
+- fix staticdir_url in config_default to make it work in https
+- fix typo in index.html
+
 Version 0.9
 
 - add stylesheet and mageia navigation bar
