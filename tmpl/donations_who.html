@@ -9,13 +9,13 @@
         <h1 id='mgnavt'><a href="index.html">treasurer</a> » <a href="donations.html">donations</a> » who</h1>
 
         <div class="content">
-        <h1>List of people who donated money to Mageia.Org</h1>
+            <h1>List of people who donated money to Mageia.Org</h1>
 
-        <ul>
-            [%- FOR pa IN donations.sorted_pa_by_total -%]
-            <li><a href="donations_p_[% pa %].html">[% donations.by_pa.$pa.who %]</a>: [% donations.by_pa.$pa.total %] Euros</li>
-            [%- END -%]
-        </ul>
+            <ul>
+                [%- FOR pa IN donations.sorted_pa_by_total -%]
+                <li><a href="donations_p_[% pa %].html">[% donations.by_pa.$pa.who %]</a>: [% donations.by_pa.$pa.total %] Euros</li>
+                [%- END -%]
+            </ul>
         </div>
     </body>
 </html>

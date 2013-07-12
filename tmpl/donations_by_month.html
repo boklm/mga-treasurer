@@ -9,25 +9,25 @@
         <h1 id='mgnavt'><a href="index.html">treasurer</a> » <a href="donations.html">donations</a> » month [% month %]</h1>
 
         <div class="content">
-        <h1>Mageia.Org donations for month [% month %]</h1>
-        <h2>Summary</h2>
-        <ul>
-            <li>
-            <b>Total</b>: [% donations.by_month.$month.total %] Euros
-            </li>
-            [% FOR type IN donations.by_month.$month.type.keys %]
-            <li>
-            <b>[% type %]</b>: [% donations.by_month.$month.type.$type %] Euros
-            </li>
-            [%- END -%]
-        </ul>
-        <h2>Donations list</h2>
-        <ul>
-            [%- USE date(format='%Y/%m/%d') -%]
-            [% FOR don IN donations.by_month.$month.donations.sort('date').reverse %]
-            <li><b><a href="donations_p_[% don.pa %].html">[% don.who %]</a></b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.sc_name %])</li>
-            [%- END -%]
-        </ul>
+            <h1>Mageia.Org donations for month [% month %]</h1>
+            <h2>Summary</h2>
+            <ul>
+                <li>
+                <b>Total</b>: [% donations.by_month.$month.total %] Euros
+                </li>
+                [% FOR type IN donations.by_month.$month.type.keys %]
+                <li>
+                <b>[% type %]</b>: [% donations.by_month.$month.type.$type %] Euros
+                </li>
+                [%- END -%]
+            </ul>
+            <h2>Donations list</h2>
+            <ul>
+                [%- USE date(format='%Y/%m/%d') -%]
+                [% FOR don IN donations.by_month.$month.donations.sort('date').reverse %]
+                <li><b><a href="donations_p_[% don.pa %].html">[% don.who %]</a></b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.sc_name %])</li>
+                [%- END -%]
+            </ul>
         </div>
     </body>
 </html>

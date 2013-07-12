@@ -9,25 +9,25 @@
         <h1 id='mgnavt'><a href="index.html">treasurer</a> » <a href="donations.html">donations</a> » <a href="donations_who.html">who</a> » [% who %]</h1>
 
         <div class="content">
-        <h1>Mageia.Org donations received from [% who %]</h1>
-        <h2>Summary</h2>
-        <ul>
-            <li>
-            <b>Total</b>: [% donations.by_pa.$pa.total %] Euros
-            </li>
-            [% FOR type IN donations.by_pa.$pa.type.keys %]
-            <li>
-            <b>[% type %]</b>: [% donations.by_pa.$pa.type.$type %] Euros
-            </li>
-            [%- END -%]
-        </ul>
-        <h2>Donations list</h2>
-        <ul>
-            [%- USE date(format='%Y/%m/%d') -%]
-            [% FOR don IN donations.by_pa.$pa.donations %]
-            <li><b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.sc_name %])</li>
-            [%- END -%]
-        </ul>
+            <h1>Mageia.Org donations received from [% who %]</h1>
+            <h2>Summary</h2>
+            <ul>
+                <li>
+                <b>Total</b>: [% donations.by_pa.$pa.total %] Euros
+                </li>
+                [% FOR type IN donations.by_pa.$pa.type.keys %]
+                <li>
+                <b>[% type %]</b>: [% donations.by_pa.$pa.type.$type %] Euros
+                </li>
+                [%- END -%]
+            </ul>
+            <h2>Donations list</h2>
+            <ul>
+                [%- USE date(format='%Y/%m/%d') -%]
+                [% FOR don IN donations.by_pa.$pa.donations %]
+                <li><b>[% don.amount %]</b> Euros on [% date.format(don.date) %] ([% don.sc_name %])</li>
+                [%- END -%]
+            </ul>
         </div>
     </body>
 </html>

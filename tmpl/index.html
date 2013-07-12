@@ -11,226 +11,226 @@
         <h1 id='mgnavt'>treasurer.mageia.og</h1>
 
         <div class="content">
-        <div class="section">
-        <h2>Donations</h2>
+            <div class="section">
+                <h2>Donations</h2>
 
-        <a href="donations.rss"><img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a>
-        [%- l = 3 -%]
-        Last [% l %] donations received :
-        <ul>
-            [%- i=0 -%]
-            [%- FOR don IN donations.donations.sort('date').reverse -%]
-            [%- i = i + 1 -%]
-            [%- LAST IF i > l -%]
-            <li><b><a href="donations_p_[% don.pa %].html">[% don.who %]</a></b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
-            [%- END -%]
-        </ul>
+                <a href="donations.rss"><img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a>
+                [%- l = 3 -%]
+                Last [% l %] donations received :
+                <ul>
+                    [%- i=0 -%]
+                    [%- FOR don IN donations.donations.sort('date').reverse -%]
+                    [%- i = i + 1 -%]
+                    [%- LAST IF i > l -%]
+                    <li><b><a href="donations_p_[% don.pa %].html">[% don.who %]</a></b> donated <b>[% don.amount %]</b> Euros on [% date.format(don.date) %]</li>
+                    [%- END -%]
+                </ul>
 
-        <a href="donations.html">See more about donations</a>.
-        </div>
+                <a href="donations.html">See more about donations</a>.
+            </div>
 
-        <div class="section">
-        <h2>Accounts status</h2>
+            <div class="section">
+                <h2>Accounts status</h2>
 
-        <ul>
-            <li>Global balances: [% transactions.balance %] Euros</li>
-            [%- FOR ac IN transactions.by_ac.keys -%]
-            <li><a href="a_[% ac %].html">[% transactions.by_ac.$ac.account %]</a>: [% transactions.by_ac.$ac.balance %] Euros</li>
-            [%- END -%]
-        </ul>
-        </div>
+                <ul>
+                    <li>Global balances: [% transactions.balance %] Euros</li>
+                    [%- FOR ac IN transactions.by_ac.keys -%]
+                    <li><a href="a_[% ac %].html">[% transactions.by_ac.$ac.account %]</a>: [% transactions.by_ac.$ac.balance %] Euros</li>
+                    [%- END -%]
+                </ul>
+            </div>
 
-        <div class="section">
-        <h2>Expenses and revenues by category</h2>
+            <div class="section">
+                <h2>Expenses and revenues by category</h2>
 
-        [%-
-        SET ca_expenses = [];
-        SET ca_expenses_names = [];
-        SET ca_revenues = [];
-        SET ca_revenues_names = [];
+                [%-
+                SET ca_expenses = [];
+                SET ca_expenses_names = [];
+                SET ca_revenues = [];
+                SET ca_revenues_names = [];
 
-        FOREACH ca IN transactions.by_ca.keys.sort;
-                IF transactions.by_ca.$ca.expenses != 0;
-                        ca_expenses.push(ca);
-                        ca_expenses_names.push(transactions.by_ca.$ca.c_name);
+                FOREACH ca IN transactions.by_ca.keys.sort;
+                        IF transactions.by_ca.$ca.expenses != 0;
+                                ca_expenses.push(ca);
+                                ca_expenses_names.push(transactions.by_ca.$ca.c_name);
+                        END;
+                        IF transactions.by_ca.$ca.revenues != 0;
+                                ca_revenues.push(ca);
+                                ca_revenues_names.push(transactions.by_ca.$ca.c_name);
+                        END;
                 END;
-                IF transactions.by_ca.$ca.revenues != 0;
-                        ca_revenues.push(ca);
-                        ca_revenues_names.push(transactions.by_ca.$ca.c_name);
-                END;
-        END;
-        -%]
+                -%]
 
-        <h3>Expenses</h3>
-        [% IF ca_expenses.size > 1 %]
-        <canvas id="expenses_ca_bar_chart" height="300" width="[% 80 + ca_expenses.size * 65 %]"></canvas>
+                <h3>Expenses</h3>
+                [% IF ca_expenses.size > 1 %]
+                <canvas id="expenses_ca_bar_chart" height="300" width="[% 80 + ca_expenses.size * 65 %]"></canvas>
 
-        <script>
+                <script>
 
-            var barChartDataExpenses = {
-                labels : ["[% ca_expenses_names.join('","') %]"],
-                datasets : [
-                {
-                    fillColor : "#e51b1b",
-                    strokeColor : "#f11111",
-                    data: [
-                    [%- FOR ca IN ca_expenses -%]
-                    [%- transactions.by_ca.$ca.expenses -%]
-                    [%- IF ! loop.last() -%],[%- END -%]
-                    [%- END %]]
-                }
-                ]
+                    var barChartDataExpenses = {
+                        labels : ["[% ca_expenses_names.join('","') %]"],
+                        datasets : [
+                        {
+                            fillColor : "#e51b1b",
+                            strokeColor : "#f11111",
+                            data: [
+                            [%- FOR ca IN ca_expenses -%]
+                            [%- transactions.by_ca.$ca.expenses -%]
+                            [%- IF ! loop.last() -%],[%- END -%]
+                            [%- END %]]
+                        }
+                        ]
                         
-            }
+                    }
 
-            var myLine = new Chart(document.getElementById("expenses_ca_bar_chart").getContext("2d")).Bar(barChartDataExpenses);
-        
-        </script>
-        [% END %]
-        <ul>
-            [%- FOR ca IN ca_expenses %]
-            <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.expenses %] Euros</li>
-            [%- END -%]
-        </ul>
+                    var myLine = new Chart(document.getElementById("expenses_ca_bar_chart").getContext("2d")).Bar(barChartDataExpenses);
 
-        <h3>Revenues</h3>
-        [% IF ca_revenues.size > 1 %]
-        <canvas id="revenues_ca_bar_chart" height="300" width="[% 80 + ca_revenues.size * 65 %]"></canvas>
+                </script>
+                [% END %]
+                <ul>
+                    [%- FOR ca IN ca_expenses %]
+                    <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.expenses %] Euros</li>
+                    [%- END -%]
+                </ul>
 
-        <script>
+                <h3>Revenues</h3>
+                [% IF ca_revenues.size > 1 %]
+                <canvas id="revenues_ca_bar_chart" height="300" width="[% 80 + ca_revenues.size * 65 %]"></canvas>
 
-            var barChartDataRevenues = {
-                labels : ["[% ca_revenues_names.join('","') %]"],
-                datasets : [
-                {
-                    fillColor : "#151f79",
-                    strokeColor : "#101333",
-                    data: [
-                    [%- FOR ca IN ca_revenues -%]
-                    [%- transactions.by_ca.$ca.revenues -%]
-                    [%- IF ! loop.last() -%],[%- END -%]
-                    [%- END %]]
-                }
-                ]
+                <script>
+
+                    var barChartDataRevenues = {
+                        labels : ["[% ca_revenues_names.join('","') %]"],
+                        datasets : [
+                        {
+                            fillColor : "#151f79",
+                            strokeColor : "#101333",
+                            data: [
+                            [%- FOR ca IN ca_revenues -%]
+                            [%- transactions.by_ca.$ca.revenues -%]
+                            [%- IF ! loop.last() -%],[%- END -%]
+                            [%- END %]]
+                        }
+                        ]
                         
-            }
+                    }
 
-            var myLine = new Chart(document.getElementById("revenues_ca_bar_chart").getContext("2d")).Bar(barChartDataRevenues);
+                    var myLine = new Chart(document.getElementById("revenues_ca_bar_chart").getContext("2d")).Bar(barChartDataRevenues);
+
+                </script>
+                [% END %]
+                <ul>
+                    [%- FOR ca IN ca_revenues %]
+                    <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.revenues %] Euros</li>
+                    [%- END -%]
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Accounts history</h2>
+
+                <canvas id="accounts_history_bar_chart" height="250" width="[% 80 + transactions.by_year.keys.size * 100 %]"></canvas>
+
+                <script>
+
+                    var barChartData = {
+                        labels : ["[% transactions.by_year.keys.sort.reverse.join('","') %]"],
+                        datasets : [
+                        {
+                            fillColor : "#151f79",
+                            strokeColor : "#101333",
+                            data : [
+                            [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
+                            [%- transactions.by_year.$year.revenues -%]
+                            [%- IF ! loop.last() -%],[%- END -%]
+                            [%- END %]]
+                        },
+                        {
+                            fillColor : "#e51b1b",
+                            strokeColor : "#f11111",
+                            data: [
+                            [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
+                            [%- transactions.by_year.$year.expenses -%]
+                            [%- IF ! loop.last() -%],[%- END -%]
+                            [%- END %]]
+                        }
+                        ]
+                    }
+
+                    var myLine = new Chart(document.getElementById("accounts_history_bar_chart").getContext("2d")).Bar(barChartData);
         
-        </script>
-        [% END %]
-        <ul>
-            [%- FOR ca IN ca_revenues %]
-            <li><b><a href="c_[% ca %].html">[% transactions.by_ca.$ca.c_name %]</a></b>: [% transactions.by_ca.$ca.revenues %] Euros</li>
-            [%- END -%]
-        </ul>
-        </div>
+                </script>
 
-        <div class="section">
-        <h2>Accounts history</h2>
 
-        <canvas id="accounts_history_bar_chart" height="250" width="[% 80 + transactions.by_year.keys.size * 100 %]"></canvas>
-
-        <script>
-
-            var barChartData = {
-                labels : ["[% transactions.by_year.keys.sort.reverse.join('","') %]"],
-                datasets : [
-                {
-                    fillColor : "#151f79",
-                    strokeColor : "#101333",
-                    data : [
+                <ul>
                     [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
-                    [%- transactions.by_year.$year.revenues -%]
-                    [%- IF ! loop.last() -%],[%- END -%]
-                    [%- END %]]
-                },
-                {
-                    fillColor : "#e51b1b",
-                    strokeColor : "#f11111",
-                    data: [
-                    [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
-                    [%- transactions.by_year.$year.expenses -%]
-                    [%- IF ! loop.last() -%],[%- END -%]
-                    [%- END %]]
-                }
-                ]
-            }
+                    <li><a href="y_[% year %].html">[%- year -%]</a> - Expenses: [% transactions.by_year.$year.expenses %] Revenues: [% transactions.by_year.$year.revenues %]</li>
+                    [%- END -%]
+                </ul>
+            </div>
 
-            var myLine = new Chart(document.getElementById("accounts_history_bar_chart").getContext("2d")).Bar(barChartData);
-        
-        </script>
+            <div class="section">
+                <h2>Who donated money</h2>
 
+                You can find <a href="donations_who.html">a list of people who donated to Mageia.Org</a>.
+            </div>
 
-        <ul>
-            [%- FOR year IN transactions.by_year.keys.sort.reverse -%]
-            <li><a href="y_[% year %].html">[%- year -%]</a> - Expenses: [% transactions.by_year.$year.expenses %] Revenues: [% transactions.by_year.$year.revenues %]</li>
-            [%- END -%]
-        </ul>
-        </div>
+            <div class="section">
+                <h2>RSS Feeds</h2>
+                <p><a href="donations.rss">Donations RSS Feed <img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a></p>
+                <p><a href="transactions.rss">Transactions RSS Feed <img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a></p>
+            </div>
 
-        <div class="section">
-        <h2>Who donated money</h2>
+            <div class="section">
+                <h2>JSON data</h2>
 
-        You can find <a href="donations_who.html">a list of people who donated to Mageia.Org</a>.
-        </div>
+                Some data is available in json format :
+                <ul>
+                    <li><a href="index.json">index.json</a>: balance, donations received in
+                    the last 30 days, time of last update and the list of the last 10
+                    donations</li>
+                    <li><a href="donations_who.json">donations_who.json</a>: list of people
+                    who donated money to Mageia.Org.</li>
+                </ul>
+            </div>
 
-        <div class="section">
-        <h2>RSS Feeds</h2>
-        <p><a href="donations.rss">Donations RSS Feed <img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a></p>
-        <p><a href="transactions.rss">Transactions RSS Feed <img src="[% config.staticdir_url %]/feed-16x16.png" alt="RSS feed" /></a></p>
-        </div>
+            <div class="section">
+                <h2>Grisbi</h2>
+                <p>
+                Mageia.Org accounts are managed using <a href="http://grisbi.org/">grisbi</a>.
+                For more details about Mageia.Org accounts, you can download
+                <a href="mageia-accounts.gsb">this file</a>, and open it with grisbi.
+                </p>
 
-        <div class="section">
-        <h2>JSON data</h2>
+                <p>
+                If you want to receive an email notification when it is updated, you
+                can subscribe to the <a href="https://ml.mageia.org/l/info/treasurer-commits">treasurer-commits</a>
+                mailing list.
+                </p>
+            </div>
 
-        Some data is available in json format :
-        <ul>
-            <li><a href="index.json">index.json</a>: balance, donations received in
-            the last 30 days, time of last update and the list of the last 10
-            donations</li>
-            <li><a href="donations_who.json">donations_who.json</a>: list of people
-            who donated money to Mageia.Org.</li>
-        </ul>
-        </div>
+            <div class="section">
+                <h2>Questions</h2>
+                For any question related to Mageia.Org accounts or donations you can
+                send an email to <a href="mailto:treasurer@mageia.org">treasurer@mageia.org</a>.
+            </div>
 
-        <div class="section">
-        <h2>Grisbi</h2>
-        <p>
-        Mageia.Org accounts are managed using <a href="http://grisbi.org/">grisbi</a>.
-        For more details about Mageia.Org accounts, you can download
-        <a href="mageia-accounts.gsb">this file</a>, and open it with grisbi.
-        </p>
+            <div class="section">
+                <h2>Source code</h2>
+                Source code for the tools used to generate this website is available on
+                Mageia svn repository :
 
-        <p>
-        If you want to receive an email notification when it is updated, you
-        can subscribe to the <a href="https://ml.mageia.org/l/info/treasurer-commits">treasurer-commits</a>
-        mailing list.
-        </p>
-        </div>
+                <p>
+                <code>
+                    $ svn co <a href="http://svnweb.mageia.org/soft/mga-treasurer/trunk/">
+                        svn://svn.mageia.org/svn/soft/mga-treasurer/trunk/</a> mga-treasurer
+                </code>
+                </p>
+            </div>
 
-        <div class="section">
-        <h2>Questions</h2>
-        For any question related to Mageia.Org accounts or donations you can
-        send an email to <a href="mailto:treasurer@mageia.org">treasurer@mageia.org</a>.
-        </div>
-
-        <div class="section">
-        <h2>Source code</h2>
-        Source code for the tools used to generate this website is available on
-        Mageia svn repository :
-
-        <p>
-        <code>
-            $ svn co <a href="http://svnweb.mageia.org/soft/mga-treasurer/trunk/">
-                svn://svn.mageia.org/svn/soft/mga-treasurer/trunk/</a> mga-treasurer
-        </code>
-        </p>
-        </div>
-
-        <div class="section">
-        <small>Last update: [% date.format(last_update, format => '%Y/%m/%d %H:%M:%S') %]</small>
-        </div>
+            <div class="section">
+                <small>Last update: [% date.format(last_update, format => '%Y/%m/%d %H:%M:%S') %]</small>
+            </div>
 
         </div>
     </body>
